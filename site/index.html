@@ -36,7 +36,7 @@
     --display:"Space Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
     --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
     --max:900px;
-    --sheet-max:1080px;
+    --pad:clamp(16px, 3.6vw, 84px);
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
@@ -65,17 +65,17 @@
      of the mark. Thin grey line work, the way a pencil print reads from a
      metre away. Clipped out once the sheet fills the window. */
   .desk{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-  .desk svg{position:absolute;stroke:var(--desk-line);fill:none;stroke-width:1.1;opacity:.65}
+  .desk svg{position:absolute;stroke:var(--desk-line);fill:none;stroke-width:1.1;opacity:.8}
   @media (max-width:1240px){ .desk{display:none} }
 
-  /* The sheet is scenery, not a container: fixed, so the content falls onto
-     it as it scrolls by. Inset on all four sides so the whole print stays on
-     the page, with desk showing around it. The bottom-right corner is cut so
-     the fold has somewhere to sit. */
+  /* The sheet is scenery, not a container: fixed, so content falls onto it as
+     it scrolls by. One even margin on all four sides — capping the width
+     instead left ~260px of desk at the sides against 44px top and bottom,
+     which is a letterbox, not a border. The bottom-right corner is cut away
+     so the fold has somewhere to sit. */
   .sheet{
     position:fixed;z-index:0;pointer-events:none;
-    top:44px;bottom:44px;left:50%;transform:translateX(-50%);
-    width:min(var(--sheet-max), calc(100% - 88px));
+    inset:var(--pad);
     background-color:var(--bg);
     background-image:
       linear-gradient(to right,  rgba(198,226,244,.07) 1px, transparent 1px),
@@ -83,13 +83,12 @@
       radial-gradient(circle at 1px 1px, rgba(229,172,87,.30) 1.3px, transparent 1.8px);
     background-size:72px 72px;
     background-position:36px 40px;
-    clip-path:polygon(0 0, 100% 0, 100% calc(100% - 58px), calc(100% - 58px) 100%, 0 100%);
+    clip-path:polygon(0 0, 100% 0, 100% calc(100% - 62px), calc(100% - 62px) 100%, 0 100%);
     box-shadow:
       0 1px 2px rgba(46,41,31,.16),
       0 14px 30px -10px rgba(46,41,31,.26),
       0 46px 90px -40px rgba(46,41,31,.40);
   }
-  /* Uneven wash and paper tooth, kept quiet — the content is the subject. */
   .sheet::after{
     content:"";position:absolute;inset:0;mix-blend-mode:soft-light;opacity:.32;
     background:
@@ -97,35 +96,23 @@
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23m)' opacity='.6'/%3E%3C/svg%3E");
     background-size:460px 460px, 160px 160px;
   }
-  /* A single ruled border, the way a sheet is framed. One rule, not two — the
-     double rule plus ticks plus symbols was reading as clutter. */
   .frame{
     position:absolute;inset:18px;pointer-events:none;
     border:1px solid rgba(198,226,244,.22);
   }
 
-  /* The folded corner: the flap shows the back of the paper, so it is light,
-     and it throws a shadow back onto the print along the crease. */
+  /* The fold. The flap shows the back of the paper, so it runs dark at the
+     crease where it is still turning and bright at the tip where the lamp
+     catches it — a flat fill reads as a cut corner, not a folded one. */
   .curl{
-    position:absolute;right:0;bottom:0;width:58px;height:58px;pointer-events:none;
-    clip-path:polygon(100% 0, 100% 100%, 0 100%);
-    background:linear-gradient(315deg,#f6f4ef 0%,#e4e0d8 52%,#cfcabf 100%);
-    filter:drop-shadow(-3px -3px 5px rgba(28,24,18,.42));
+    position:absolute;right:0;bottom:0;width:62px;height:62px;pointer-events:none;
+    filter:drop-shadow(-5px -5px 7px rgba(28,24,18,.40));
   }
 
-  /* On a phone an 88px desk margin is wider than the text column, so the
-     print would sit narrower than the words on it. Tighten everything. */
   @media (max-width:760px){
-    .sheet{
-      top:14px;bottom:14px;width:calc(100% - 18px);
-      clip-path:polygon(0 0, 100% 0, 100% calc(100% - 38px), calc(100% - 38px) 100%, 0 100%);
-    }
-    .curl{width:38px;height:38px}
+    .sheet{clip-path:polygon(0 0, 100% 0, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%)}
+    .curl{width:40px;height:40px}
     .frame{inset:10px}
-    .deskmask{
-      -webkit-mask-image:linear-gradient(180deg,#000 0 14px,transparent 14px,transparent calc(100% - 14px),#000 calc(100% - 14px));
-              mask-image:linear-gradient(180deg,#000 0 14px,transparent 14px,transparent calc(100% - 14px),#000 calc(100% - 14px));
-    }
     header{padding-top:52px}
   }
 
@@ -134,16 +121,13 @@
   .deskmask{
     position:fixed;inset:0;z-index:2;pointer-events:none;
     background:var(--desk);
-    -webkit-mask-image:linear-gradient(180deg,#000 0 44px,transparent 44px,transparent calc(100% - 44px),#000 calc(100% - 44px));
-            mask-image:linear-gradient(180deg,#000 0 44px,transparent 44px,transparent calc(100% - 44px),#000 calc(100% - 44px));
+    -webkit-mask-image:linear-gradient(180deg,#000 0 var(--pad),transparent var(--pad),transparent calc(100% - var(--pad)),#000 calc(100% - var(--pad)));
+            mask-image:linear-gradient(180deg,#000 0 var(--pad),transparent var(--pad),transparent calc(100% - var(--pad)),#000 calc(100% - var(--pad)));
   }
 
   .wrap{max-width:var(--max);margin:0 auto;padding:0 24px;position:relative;z-index:1}
-  /* Between the phone breakpoint and ~1070px the 88px desk margin makes the
-     print narrower than the text column would like. Hold the text in so it
-     never crosses the ruled border. */
   @media (min-width:761px){
-    .wrap{max-width:min(var(--max), calc(100vw - 168px))}
+    .wrap{max-width:min(var(--max), calc(100vw - 2 * var(--pad) - 72px))}
   }
   a{color:inherit}
   h1,h2{font-family:var(--display);line-height:1.16;letter-spacing:-.03em;margin:0}
@@ -289,36 +273,66 @@
 <body>
 
 <div class="desk" aria-hidden="true">
-  <!-- floor plan -->
-  <svg style="left:-30px;top:7%" width="230" height="180" viewBox="0 0 230 180">
+  <!-- top left: floor plan, tucked under the sheet corner -->
+  <svg style="left:-52px;top:-14px" width="230" height="180" viewBox="0 0 230 180">
     <path d="M10 20h150v120H10zM10 70h60M70 20v50M70 95h90M160 60h50M115 140v-45"/>
     <path d="M30 20v-8M78 20v-8M10 100H2M10 132H2" stroke-dasharray="3 3"/>
     <circle cx="45" cy="110" r="14"/><path d="M31 110h28M45 96v28"/>
   </svg>
-    <!-- the mark, drawn as a detail -->
-  <svg style="left:22px;top:45%" width="150" height="150" viewBox="0 0 150 150">
+  <!-- top right: section with hatching -->
+  <svg style="right:-46px;top:-8px" width="210" height="150" viewBox="0 0 210 150">
+    <path d="M20 120h170M20 120V40l85-28 85 28v80"/>
+    <path d="M50 120V72h44v48M120 78h44v42h-44z"/>
+    <path d="M20 128h170M28 128v8M190 128v8"/>
+    <g opacity=".55"><path d="M124 82l36 0M124 90l36 0M124 98l36 0M124 106l36 0M124 114l36 0"/></g>
+  </svg>
+  <!-- left: the mark as a joint detail -->
+  <svg style="left:-38px;top:40%" width="150" height="150" viewBox="0 0 150 150">
     <path d="M40 118V32M110 118V32M40 58h70M40 88h70"/>
     <path d="M40 128v10M110 128v10M40 133h70" stroke-dasharray="4 3"/>
     <circle cx="40" cy="58" r="4"/><circle cx="110" cy="58" r="4"/>
     <circle cx="40" cy="88" r="4"/><circle cx="110" cy="88" r="4"/>
   </svg>
-  <!-- column detail -->
-  <svg style="right:34px;top:57%" width="140" height="160" viewBox="0 0 140 160">
+  <!-- right: column detail -->
+  <svg style="right:-34px;top:46%" width="140" height="160" viewBox="0 0 140 160">
     <circle cx="70" cy="60" r="36"/><circle cx="70" cy="60" r="22"/>
     <path d="M70 10v100M20 60h100" stroke-dasharray="6 4"/>
     <path d="M34 124h72v22H34zM48 124v22M62 124v22M76 124v22M90 124v22"/>
   </svg>
-    <!-- second plan -->
-  <svg style="right:-20px;top:84%" width="220" height="170" viewBox="0 0 220 170">
+  <!-- bottom left: dimensioned run -->
+  <svg style="left:-40px;bottom:-18px" width="200" height="120" viewBox="0 0 200 120">
+    <path d="M14 30h170M14 24v12M100 24v12M184 24v12"/>
+    <path d="M14 60h60v46H14zM94 60h90v46H94z"/>
+    <g opacity=".5"><path d="M20 66l48 34M20 78l48 34M20 90l40 22"/></g>
+  </svg>
+  <!-- bottom right: second plan, clear of the fold -->
+  <svg style="right:-56px;bottom:-26px" width="220" height="170" viewBox="0 0 220 170">
     <path d="M20 24h160v120H20zM70 24v120M120 60h60M20 100h50"/>
     <path d="M180 24l24-16M180 144l24 16" stroke-dasharray="3 3"/>
     <circle cx="150" cy="110" r="18"/><path d="M150 92v36M132 110h36"/>
+  </svg>
+  <!-- a rule and a pencil, bottom edge -->
+  <svg style="left:34%;bottom:-30px" width="240" height="90" viewBox="0 0 240 90">
+    <path d="M8 30h190v22H8z"/>
+    <g opacity=".6"><path d="M24 30v9M40 30v9M56 30v9M72 30v9M88 30v9M104 30v9M120 30v9M136 30v9M152 30v9M168 30v9M184 30v9"/></g>
+    <path d="M14 66h150l14 8-14 8H14z"/>
   </svg>
 </div>
 
 <div class="sheet" aria-hidden="true">
   <div class="frame"></div>
-  <div class="curl"></div>
+  <svg class="curl" viewBox="0 0 62 62" aria-hidden="true">
+    <defs>
+      <linearGradient id="fold" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="50%"  stop-color="#9d9789"/>
+        <stop offset="62%"  stop-color="#c9c4b7"/>
+        <stop offset="80%"  stop-color="#eeebe3"/>
+        <stop offset="100%" stop-color="#fdfcf9"/>
+      </linearGradient>
+    </defs>
+    <path d="M0 62 L62 0 L62 62 Z" fill="url(#fold)"/>
+    <path d="M0 62 L62 0" stroke="rgba(255,255,255,.30)" stroke-width="1" fill="none"/>
+  </svg>
 </div>
 <div class="deskmask" aria-hidden="true"></div>
 
