@@ -83,7 +83,6 @@
       radial-gradient(circle at 1px 1px, rgba(229,172,87,.30) 1.3px, transparent 1.8px);
     background-size:72px 72px;
     background-position:36px 40px;
-    clip-path:polygon(0 0, 100% 0, 100% calc(100% - 76px), calc(100% - 76px) 100%, 0 100%);
     box-shadow:
       0 1px 1px rgba(46,41,31,.18),
       0 6px 14px -6px rgba(46,41,31,.24),
@@ -101,13 +100,13 @@
     border:1px solid rgba(198,226,244,.22);
   }
 
-  /* The fold. The flap shows the back of the paper, so it runs dark at the
-     crease where it is still turning and bright at the tip where the lamp
-     catches it — a flat fill reads as a cut corner, not a folded one. */
-  .curl{
-    position:absolute;right:0;bottom:0;width:76px;height:76px;pointer-events:none;
-    filter:drop-shadow(-6px -6px 9px rgba(24,20,15,.48));
-  }
+  /* Creases: short diagonal handling marks at the corners, where a print
+     that has been picked up and put down actually wears. Each is a dark
+     valley with a light peak offset a pixel off it — the same trick as the
+     old fold, but local. Full-width creases read as separate sheets taped
+     together, which is why they came out; at 90px in a corner they read as
+     paper. */
+  .crease{position:absolute;pointer-events:none;fill:none;stroke-linecap:round}
 
   /* On a phone there is no room for a desk border: at 375px an even margin
      plus the ruled frame left the text column narrower than the words in it,
@@ -115,8 +114,7 @@
      the background image, cropped. */
   @media (max-width:700px){
     :root{--pad:0px}
-    .frame,.curl,.deskmask{display:none}
-    .sheet{clip-path:none}
+    .frame,.crease,.deskmask{display:none}
     header{padding-top:56px}
   }
 
@@ -347,18 +345,25 @@
 
 <div class="sheet" aria-hidden="true">
   <div class="frame"></div>
-  <svg class="curl" viewBox="0 0 76 76" aria-hidden="true">
-    <defs>
-      <linearGradient id="fold" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="50%"  stop-color="#8b8476"/>
-        <stop offset="60%"  stop-color="#b0aa9b"/>
-        <stop offset="76%"  stop-color="#dcd7cb"/>
-        <stop offset="91%"  stop-color="#f5f2eb"/>
-        <stop offset="100%" stop-color="#fffefc"/>
-      </linearGradient>
-    </defs>
-    <path d="M0 76 L76 0 L76 50 Q 76 76 50 76 Z" fill="url(#fold)"/>
-    <path d="M0 76 L76 0" stroke="rgba(255,255,255,.40)" stroke-width="1.2" fill="none"/>
+  <svg class="crease" style="left:0;top:0" width="180" height="180" viewBox="0 0 180 180" aria-hidden="true">
+    <g><path d="M0 104 L88 0" stroke="rgba(3,12,22,.44)" stroke-width="1.7" transform="translate(1.5,1.5)"/>
+       <path d="M0 104 L88 0" stroke="rgba(206,232,252,.20)" stroke-width="1"/>
+       <path d="M0 46 L40 0"  stroke="rgba(3,12,22,.32)" stroke-width="1.4" transform="translate(1.5,1.5)"/>
+       <path d="M0 46 L40 0"  stroke="rgba(206,232,252,.14)" stroke-width="1"/></g>
+  </svg>
+  <svg class="crease" style="right:0;top:0" width="160" height="160" viewBox="0 0 160 160" aria-hidden="true">
+    <g><path d="M160 88 L74 0" stroke="rgba(3,12,22,.40)" stroke-width="1.6" transform="translate(-1.5,1.5)"/>
+       <path d="M160 88 L74 0" stroke="rgba(206,232,252,.18)" stroke-width="1"/></g>
+  </svg>
+  <svg class="crease" style="left:0;bottom:0" width="150" height="150" viewBox="0 0 150 150" aria-hidden="true">
+    <g><path d="M0 62 L72 150" stroke="rgba(3,12,22,.38)" stroke-width="1.6" transform="translate(1.5,-1.5)"/>
+       <path d="M0 62 L72 150" stroke="rgba(206,232,252,.16)" stroke-width="1"/></g>
+  </svg>
+  <svg class="crease" style="right:0;bottom:0" width="190" height="190" viewBox="0 0 190 190" aria-hidden="true">
+    <g><path d="M190 96 L96 190" stroke="rgba(3,12,22,.46)" stroke-width="1.8" transform="translate(-1.5,-1.5)"/>
+       <path d="M190 96 L96 190" stroke="rgba(206,232,252,.23)" stroke-width="1.1"/>
+       <path d="M190 148 L146 190" stroke="rgba(3,12,22,.32)" stroke-width="1.4" transform="translate(-1.5,-1.5)"/>
+       <path d="M190 148 L146 190" stroke="rgba(206,232,252,.14)" stroke-width="1"/></g>
   </svg>
 </div>
 <div class="deskmask" aria-hidden="true"></div>
