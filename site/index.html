@@ -11,7 +11,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b0b0c'/><g stroke='%23e0a84b' stroke-width='9' stroke-linecap='round'><path d='M26 74V32M74 74V32M26 45h48M26 61h48'/></g></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#0b0b0c;
@@ -24,7 +24,8 @@
     --accent:#e0a84b;
     --ok:#7fbf7f;
     --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-    --sans:"Bricolage Grotesque",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    --display:"Space Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
     --max:900px;
   }
   *{box-sizing:border-box}
@@ -70,7 +71,7 @@
     position:absolute;box-sizing:content-box;
     left:calc(50% - 36px + var(--cx) * 72px);
     top:calc(var(--cy) * 72px - 1px);
-    width:71px;height:216px;          /* 71 + two 1px borders = exactly 2 cells apart */
+    width:215px;height:216px;         /* 215 + two 1px borders = exactly 3 cells apart */
     border-left:1px solid rgba(224,168,75,var(--o));
     border-right:1px solid rgba(224,168,75,var(--o));
   }
@@ -85,19 +86,19 @@
 
   .wrap{max-width:var(--max);margin:0 auto;padding:0 24px;position:relative;z-index:1}
   a{color:inherit}
-  h1,h2{line-height:1.1;letter-spacing:-.015em;margin:0;font-optical-sizing:auto}
+  h1,h2{font-family:var(--display);line-height:1.16;letter-spacing:-.03em;margin:0}
   code{font-family:var(--mono)}
 
   /* ---------- hero ---------- */
   header{padding:80px 0 0;text-align:center}
   .mark{
     display:inline-flex;align-items:center;gap:11px;
-    font-family:var(--mono);font-weight:700;font-size:14px;
+    font-family:var(--display);font-weight:400;font-size:14px;
     letter-spacing:.17em;text-transform:uppercase;color:var(--accent);
     margin-bottom:26px;
   }
   .mark svg{width:18px;height:18px;display:block}
-  h1{font-size:clamp(2.5rem,7vw,4.1rem);font-weight:700}
+  h1{font-size:clamp(2rem,5.6vw,3.6rem);font-weight:400}
   .tagline{
     margin:20px auto 0;
     font-size:clamp(1rem,2.4vw,1.22rem);color:var(--fg-2);
@@ -144,7 +145,7 @@
 
   /* ---------- section ---------- */
   section{padding:82px 0 0}
-  h2{font-size:clamp(1.55rem,3.8vw,2rem);font-weight:650;max-width:40ch}
+  h2{font-size:clamp(1.3rem,3.1vw,1.75rem);font-weight:400;max-width:46ch}
 
   /* ---------- flow: when each layer fires ---------- */
   .flow{
@@ -168,7 +169,7 @@
   }
   .node:hover .pip::after{background:var(--accent);box-shadow:0 0 12px var(--accent)}
   .node .name{
-    font-family:var(--mono);font-size:14px;font-weight:700;letter-spacing:.03em;
+    font-family:var(--display);font-size:13px;font-weight:400;letter-spacing:.02em;
     color:var(--accent);margin-bottom:8px;
   }
   .node .what{color:var(--fg-2);font-size:.9rem;line-height:1.5}
@@ -228,13 +229,12 @@
 <body>
 
 <div class="joints" aria-hidden="true">
-  <i style="--cx:-8;--cy:0;--o:.42"></i>
-  <i style="--cx:7;--cy:1;--o:.38"></i>
-  <i style="--cx:-9;--cy:3;--o:.34"></i>
-  <i style="--cx:8;--cy:4;--o:.45"></i>
-  <i style="--cx:-7;--cy:6;--o:.30"></i>
-  <i style="--cx:9;--cy:7;--o:.32"></i>
-  <i style="--cx:6;--cy:9;--o:.26"></i>
+  <i style="--cx:-9;--cy:0;--o:.40"></i>
+  <i style="--cx:7;--cy:2;--o:.36"></i>
+  <i style="--cx:-11;--cy:4;--o:.30"></i>
+  <i style="--cx:9;--cy:5;--o:.34"></i>
+  <i style="--cx:-10;--cy:8;--o:.26"></i>
+  <i style="--cx:8;--cy:9;--o:.24"></i>
 </div>
 
 <div class="wrap">
