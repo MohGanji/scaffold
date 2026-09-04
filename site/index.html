@@ -53,19 +53,35 @@
             mask-image:radial-gradient(ellipse 95% 78% at 50% 2%, #000 30%, transparent 85%);
   }
 
-  /* The mark itself, scattered across the grid and brighter than it. Snapped
-     nowhere in particular — irregular reads as structure, a pattern reads as
-     wallpaper. Fixed, so they sit still while the page scrolls over them. */
-  .joints{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-  .joints i{
-    position:absolute;left:var(--x);top:var(--y);
-    width:var(--s);height:var(--s);opacity:var(--o);
-    transform:rotate(var(--r,0deg));
-    background:no-repeat center/contain
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg stroke='%23e0a84b' stroke-width='9' stroke-linecap='round' fill='none'%3E%3Cpath d='M26 74V32M74 74V32M26 45h48M26 61h48'/%3E%3C/g%3E%3C/svg%3E");
+  /* The mark drawn OUT of the grid, not laid on top of it: a cell-wide,
+     three-cell-tall box whose sides land exactly on two vertical grid lines
+     and whose two rules land on the horizontal ones between them. Same lines
+     as everywhere else, just turned up — so |=| surfaces from the pattern.
+
+     Alignment is exact, not eyeballed. A centered repeating background puts
+     its vertical lines at 50% - 36px + 72k, and the grid's own vertical
+     offset is -1px, so both axes are addressable in whole cells. */
+  .joints{
+    position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;
+    -webkit-mask-image:radial-gradient(ellipse 95% 78% at 50% 2%, #000 30%, transparent 88%);
+            mask-image:radial-gradient(ellipse 95% 78% at 50% 2%, #000 30%, transparent 88%);
   }
-  /* Below the content column they would sit behind opaque panels anyway. */
-  @media (max-width:820px){ .joints i{opacity:calc(var(--o) * .55)} }
+  .joints i{
+    position:absolute;box-sizing:content-box;
+    left:calc(50% - 36px + var(--cx) * 72px);
+    top:calc(var(--cy) * 72px - 1px);
+    width:71px;height:216px;          /* 71 + two 1px borders = exactly 2 cells apart */
+    border-left:1px solid rgba(224,168,75,var(--o));
+    border-right:1px solid rgba(224,168,75,var(--o));
+  }
+  .joints i::before,.joints i::after{
+    content:"";position:absolute;left:-1px;right:-1px;height:1px;
+    background:rgba(224,168,75,var(--o));
+  }
+  .joints i::before{top:72px}
+  .joints i::after{top:144px}
+  /* Under ~1100px the content column reaches the marks; back them off. */
+  @media (max-width:1100px){ .joints{opacity:.45} }
 
   .wrap{max-width:var(--max);margin:0 auto;padding:0 24px;position:relative;z-index:1}
   a{color:inherit}
@@ -212,14 +228,13 @@
 <body>
 
 <div class="joints" aria-hidden="true">
-  <i style="--x:4%;--y:11%;--s:34px;--o:.40"></i>
-  <i style="--x:92%;--y:19%;--s:24px;--o:.30;--r:90deg"></i>
-  <i style="--x:9%;--y:37%;--s:18px;--o:.20"></i>
-  <i style="--x:95%;--y:47%;--s:30px;--o:.36"></i>
-  <i style="--x:2%;--y:63%;--s:26px;--o:.26;--r:90deg"></i>
-  <i style="--x:88%;--y:74%;--s:20px;--o:.22"></i>
-  <i style="--x:13%;--y:86%;--s:30px;--o:.32"></i>
-  <i style="--x:79%;--y:6%;--s:16px;--o:.18;--r:90deg"></i>
+  <i style="--cx:-8;--cy:0;--o:.42"></i>
+  <i style="--cx:7;--cy:1;--o:.38"></i>
+  <i style="--cx:-9;--cy:3;--o:.34"></i>
+  <i style="--cx:8;--cy:4;--o:.45"></i>
+  <i style="--cx:-7;--cy:6;--o:.30"></i>
+  <i style="--cx:9;--cy:7;--o:.32"></i>
+  <i style="--cx:6;--cy:9;--o:.26"></i>
 </div>
 
 <div class="wrap">
