@@ -44,14 +44,28 @@
   body::before{
     content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
     background-image:
-      linear-gradient(to right,  rgba(255,255,255,.040) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255,255,255,.040) 1px, transparent 1px),
-      radial-gradient(circle at 1px 1px, rgba(224,168,75,.34) 1.2px, transparent 1.7px);
+      linear-gradient(to right,  rgba(255,255,255,.058) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,.058) 1px, transparent 1px),
+      radial-gradient(circle at 1px 1px, rgba(224,168,75,.42) 1.3px, transparent 1.8px);
     background-size:72px 72px, 72px 72px, 72px 72px;
     background-position:center -1px, center -1px, center -1px;
     -webkit-mask-image:radial-gradient(ellipse 95% 78% at 50% 2%, #000 30%, transparent 85%);
             mask-image:radial-gradient(ellipse 95% 78% at 50% 2%, #000 30%, transparent 85%);
   }
+
+  /* The mark itself, scattered across the grid and brighter than it. Snapped
+     nowhere in particular — irregular reads as structure, a pattern reads as
+     wallpaper. Fixed, so they sit still while the page scrolls over them. */
+  .joints{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+  .joints i{
+    position:absolute;left:var(--x);top:var(--y);
+    width:var(--s);height:var(--s);opacity:var(--o);
+    transform:rotate(var(--r,0deg));
+    background:no-repeat center/contain
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg stroke='%23e0a84b' stroke-width='9' stroke-linecap='round' fill='none'%3E%3Cpath d='M26 74V32M74 74V32M26 45h48M26 61h48'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  /* Below the content column they would sit behind opaque panels anyway. */
+  @media (max-width:820px){ .joints i{opacity:calc(var(--o) * .55)} }
 
   .wrap{max-width:var(--max);margin:0 auto;padding:0 24px;position:relative;z-index:1}
   a{color:inherit}
@@ -196,6 +210,17 @@
 </style>
 </head>
 <body>
+
+<div class="joints" aria-hidden="true">
+  <i style="--x:4%;--y:11%;--s:34px;--o:.40"></i>
+  <i style="--x:92%;--y:19%;--s:24px;--o:.30;--r:90deg"></i>
+  <i style="--x:9%;--y:37%;--s:18px;--o:.20"></i>
+  <i style="--x:95%;--y:47%;--s:30px;--o:.36"></i>
+  <i style="--x:2%;--y:63%;--s:26px;--o:.26;--r:90deg"></i>
+  <i style="--x:88%;--y:74%;--s:20px;--o:.22"></i>
+  <i style="--x:13%;--y:86%;--s:30px;--o:.32"></i>
+  <i style="--x:79%;--y:6%;--s:16px;--o:.18;--r:90deg"></i>
+</div>
 
 <div class="wrap">
 
