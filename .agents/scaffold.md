@@ -6,7 +6,7 @@ This file is the installer.
 
 ## Getting here
 
-**If you were pointed at this from another repo** — the user said something like *"set https://github.com/MohGanji/scaffold up"* — you're reading this remotely. Bring it in first, then start at Phase 0:
+**If you were pointed at this from another repo** — the user said something like *"set https://github.com/MohGanji/scaffold up in this repo"* — you're reading this remotely. Bring it in first, then start at Phase 0:
 
 ```bash
 git clone --depth 1 https://github.com/MohGanji/scaffold /tmp/scaffold

@@ -17,10 +17,12 @@ Scaffold is that machinery, in one folder.
 Send this to your agent, in any repo:
 
 ```
-set https://github.com/MohGanji/scaffold up
+set https://github.com/MohGanji/scaffold up in this repo
 ```
 
 It does the rest — pulls the folder in, installs the skills, wires the hooks and CI, and walks ten phases one decision at a time. You answer questions.
+
+> **Agent reading this:** the installer is [`.agents/scaffold.md`](.agents/scaffold.md). Open it and follow its *Getting here* step. Nothing else in this repo is meant to be copied.
 
 What you end up with: an agent entry point, a curated skill set, quality gates wired into both the commit hook and CI, guardrails that fire before a tool call instead of after, and a fleet of cloud agents that moves work from ticket to merge without you dispatching each step.
 

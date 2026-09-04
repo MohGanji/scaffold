@@ -201,7 +201,7 @@
     <h1>Stop rebuilding<br>the same machinery.</h1>
     <p class="tagline">Point an agent at this repo. <b>Get a software factory.</b></p>
 
-    <div class="term" role="img" aria-label="A terminal. An agent is told to read .agents/scaffold.md and set the repo up, then builds a tree: skills for planning, building, reviewing and design; a guardrail blocking --no-verify; quality gates for lint, dry, crap, react and tests; automations split into workers, review lenses and joiners; and environments. It ends with 'factory ready'.">
+    <div class="term" role="img" aria-label="A terminal. An agent is told to set github.com/MohGanji/scaffold up in this repo, then builds a tree: skills for planning, building, reviewing and design; a guardrail blocking --no-verify; quality gates for lint, dry, crap, react and tests; automations split into workers, review lenses and joiners; and environments. It ends with 'factory ready'.">
       <div class="term-bar">
         <span class="dot"></span><span class="dot"></span><span class="dot"></span>
         <span class="term-title">~/projects/new-thing</span>
@@ -248,7 +248,7 @@
     <h2>Send this to your agent.</h2>
     <p class="lede">It reads the repo, pulls in what it needs and installs the skills itself. You just answer questions.</p>
     <div class="copy">
-      <code id="cmd">set https://github.com/MohGanji/scaffold up</code>
+      <code id="cmd">set https://github.com/MohGanji/scaffold up in this repo</code>
       <button id="copyBtn" type="button" aria-label="Copy the setup prompt">Copy</button>
     </div>
     <div class="cta">
@@ -269,7 +269,8 @@
   /* ---------------- terminal ---------------- */
   var term = document.getElementById('term');
   if(term){
-    var PROMPT = 'Read .agents/scaffold.md and set this repo up.';
+    // Same sentence as the install section — one entry point, stated once.
+    var PROMPT = 'set https://github.com/MohGanji/scaffold up in this repo';
 
     // p = tree glyphs, n = node name, d = what you get, k = kind
     var TREE = [
