@@ -14,21 +14,9 @@ your-repo/
 
 ## Why a sibling, not a subfolder
 
-`.agents/` and `.agents-workshop/` differ in the one way that matters: **config versus output.**
+`.agents/` is config — hand-authored text worth reading a diff of. The workshop is output — generated, often large, meaningless to diff.
 
-`.agents/` is configuration — how the factory works. Some of it arrives from scaffold, some you write yourself (your guardrails, your automations, your environments). All of it is small, hand-authored text worth reading a diff of.
-
-`.agents-workshop/` is what the factory produced. Generated, often large, and meaningless to diff — nobody reviews a rendered MP4 line by line.
-
-Nest them and you lose both properties. `cp -R scaffold/.agents your-repo/` starts dragging one repo's artifacts into another — the same failure mode that makes automations unportable.
-
-**The payoff is upgrades.** Point an agent back at scaffold a year from now and ask it to update your factory, and `.agents/` is the entire diff surface — config against config. Every difference is a real decision: upstream added a guardrail, or you wrote an automation, or both touched the same convention.
-
-Nest the workshop inside it and that diff fills with your research notes, your rendered videos and last quarter's prototypes, and the one useful signal drowns.
-
-The `.agents-` prefix keeps the pairing visible and sorts them adjacent. The separation stays real.
-
-**Why not `workspace`?** npm workspaces, VS Code workspaces, Cursor workspaces. The word already means "tooling config" to every tool that might read it.
+Keeping them apart is what makes upgrades work: point an agent back at scaffold later and `.agents/` is the whole comparison surface, instead of a diff drowning in rendered videos and last quarter's prototypes.
 
 ## What goes in
 
@@ -43,19 +31,7 @@ The `.agents-` prefix keeps the pairing visible and sorts them adjacent. The sep
 | `reports/` | Architecture dashboards, review output, generated HTML | `improve-codebase-architecture`, review lenses |
 | `inspirations/` | Reference material you drop in — videos, screenshots, styles | you |
 
-Add folders as skills need them. The rule is the test below, not this table.
-
-**`braindump/` is the one worth being deliberate about.** It's shared — every agent reads it, any agent may append to it. That makes it the cheapest way to stop the fleet re-deriving the same conclusion every week, and the fastest way to poison it if something wrong gets written down and never re-checked. Every line is dated, stands on its own, and gets deleted when it stops being true. A memory nobody prunes becomes a memory nobody trusts.
-
-## The test
-
-> Would you ship this to a user, or does the build depend on it?
-
-**Yes** → your source tree. It's product.
-**No, but you want to keep it** → `.agents-workshop/`.
-**No, and it's regenerable** → `.agents-workshop/`, gitignored.
-
-Research notes are worth committing. A 200MB rendered MP4 is not.
+Add folders as skills need them.
 
 ## Videos
 
@@ -88,10 +64,6 @@ Commit the work, ignore the renders and the installs:
 
 Adjust per folder. The default is **commit it** — an agent's research note is worth more in six months than it is today, and it costs kilobytes. `braindump/` in particular is worthless uncommitted: shared means shared with the next clone, not just the next session.
 
-## Gates do not run here
+## Gates
 
-Quality gates scope to your source tree. A throwaway prototype should not fail CI for its CRAP score, and a Remotion composition is not held to the product's lint rules.
-
-Add `.agents-workshop/` to each gate's ignore file. That's the ignore-file rule from [`gates/README.md`](gates/README.md), applied here — never a special case inside the script.
-
-The exception is anything you later promote out of the workshop into the product. At that point it's product, and the gates apply.
+Add `.agents-workshop/` to each gate's ignore file ([`gates/README.md`](gates/README.md)) — a throwaway prototype shouldn't fail CI for its complexity score.
