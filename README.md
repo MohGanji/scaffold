@@ -26,6 +26,16 @@ It does the rest — pulls the folder in, installs the skills, wires the hooks a
 
 What you end up with: an agent entry point, a curated skill set, quality gates wired into both the commit hook and CI, guardrails that fire before a tool call instead of after, and a fleet of cloud agents that moves work from ticket to merge without you dispatching each step.
 
+## Staying current
+
+Point an agent back here later:
+
+```
+update the factory in this repo from https://github.com/MohGanji/scaffold
+```
+
+`.agents/` is the whole diff surface — config against config. Generated work lives in `.agents-workshop/`, so upstream changes stay legible instead of drowning in your research notes and rendered videos.
+
 ## Four layers
 
 | Layer | Question it answers |

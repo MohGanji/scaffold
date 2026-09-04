@@ -12,6 +12,8 @@ npx skills@latest add mohganji/skills
 
 Then run `/bootstrap-agentic-repo`. It detects the stack, installs the rest, and offers the setup skills that fit.
 
+**Remotion is the case that proves the curate rule.** `remotion-dev/remotion` ships ~68 skills, and most of them are for contributing *to* Remotion — `add-bug`, `gh-stack`, `fix-dependabot`, `update-stars`. Keep the `remotion-*` ones (`remotion-create`, `remotion-best-practices`, `remotion-render`, `remotion-studio`, `remotion-captions`, `remotion-docs`) and delete the rest. Installing all 68 buys you a context bill and sixty ways to file a bug against someone else's repo.
+
 **Gotcha:** `--skill=<name>` **does not filter** — it installs the whole repo regardless. Install, then delete what you don't want, then prune `skills-lock.json`.
 
 ## Sources
@@ -22,6 +24,9 @@ Then run `/bootstrap-agentic-repo`. It detects the stack, installs the rest, and
 | [`mattpocock/skills`](https://github.com/mattpocock/skills) | `npx skills@latest add mattpocock/skills` |
 | [`millionco/react-doctor`](https://github.com/millionco/react-doctor) | `npx skills@latest add millionco/react-doctor` |
 | [`ericzakariasson/scandinavian-design`](https://github.com/ericzakariasson/scandinavian-design) | `npx skills@latest add ericzakariasson/scandinavian-design` |
+| [`emilkowalski/skills`](https://github.com/emilkowalski/skills) | `npx skills@latest add emilkowalski/skills` |
+| [`remotion-dev/remotion`](https://github.com/remotion-dev/remotion) | `npx skills@latest add remotion-dev/remotion` — **curate hard**, see below |
+| [`199-biotechnologies/motion-dev-animations-skill`](https://github.com/199-biotechnologies/motion-dev-animations-skill) | `npx skills@latest add 199-biotechnologies/motion-dev-animations-skill` |
 | [`cursor/plugins`](https://github.com/cursor/plugins) — `cursor-team-kit` | [`thermo-nuclear-code-quality-review`](https://github.com/cursor/plugins/blob/main/cursor-team-kit/skills/thermo-nuclear-code-quality-review/SKILL.md). `find-critical-bugs` started as a Cursor automation template — the skill adaptation installs from `mohganji/skills`. |
 
 ## Roster
@@ -87,8 +92,24 @@ The lenses the automation fleet runs. Independent by design — never let one re
 | Skill | Source | What it does |
 | --- | --- | --- |
 | `design-deliberately` | mohganji | Intentional minimalism — every element earns its place |
-| `apple-design` | mohganji | Apple's motion, gesture, material and typography, for the web |
+| `apple-design` | emilkowalski | Apple's motion, gesture, material and typography, for the web |
 | `scandinavian-design` | ericzakariasson | Scandinavian visual system, with a scoring harness |
+
+### Motion & video
+
+Reach for these when the deliverable moves — an interface transition, a launch film, a feature demo.
+
+| Skill | Source | What it does |
+| --- | --- | --- |
+| `animate` | emilkowalski | Build an animation that feels right, not just one that runs |
+| `improve-animations` | emilkowalski | Fix timing, easing and interruption on animations that already exist |
+| `review-animations` | emilkowalski | Critique motion the way a design engineer would |
+| `find-animation-opportunities` | emilkowalski | Spot the places motion would earn its keep |
+| `animation-vocabulary` | emilkowalski | Shared language for describing motion precisely |
+| `motion-dev-animations` | [199-biotechnologies](https://github.com/199-biotechnologies/motion-dev-animations-skill) | Motion.dev — 120fps, spring physics, scroll and gesture |
+| `remotion-create` · `remotion-best-practices` · `remotion-render` · `remotion-studio` | remotion | Video as React. See the curate warning above |
+
+Remotion videos live in [`.agents-workshop/videos/`](workshop.md), one project per video — not at the repo root.
 
 ### Meta
 

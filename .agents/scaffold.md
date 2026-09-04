@@ -18,7 +18,31 @@ That's the whole payload. The target repo never needs this repo again.
 
 Don't copy `README.md`, `site/` or the workflow in `.github/` — those belong to scaffold itself, not to the repo you're setting up.
 
-**If `.agents/` is already here**, you're in the right place. Start at Phase 0.
+**If `.agents/` is already here**, you're in the right place. Start at Phase 0 — or, if the factory is already built, see *Updating* below.
+
+## Updating a factory that already exists
+
+Point an agent back here whenever you want the newest version:
+
+> update the factory in this repo from https://github.com/MohGanji/scaffold
+
+**`.agents/` is the entire comparison surface.** Nothing generated ever lands in it — that's what [`.agents-workshop/`](workshop.md) is for — so a diff against upstream is meaningful instead of noise.
+
+1. Shallow-clone scaffold to a scratch directory.
+2. `diff -ru <repo>/.agents /tmp/scaffold/.agents`.
+3. Sort every difference into three buckets and report them:
+
+| Bucket | Meaning | Default |
+| --- | --- | --- |
+| **Upstream only** | New guardrail, revised convention, fresh platform finding | Offer it |
+| **Local only** | Your automations, your guardrails, your environments | Keep, always |
+| **Both changed** | Upstream revised something you also edited | One decision at a time |
+
+4. Apply what the user picks. Commit that on its own.
+
+**Never blind-copy `.agents/` over an existing one.** The automations you derived in Phase 8 and the guardrails you wrote in Phase 6 live there, and upstream ships none of them. "Local only" is the expected state for those folders, not a problem to fix.
+
+`.agents-workshop/` is never part of an update. It's yours; upstream has nothing to say about it.
 
 ## The four layers
 
@@ -32,6 +56,8 @@ Each answers one question. Keep them separate and none of them rots.
 | **Automations** | *When*, and as *whom*, does an agent run? | [`automations/`](automations/) |
 
 Skills are the only layer this repo does not contain. They are borrowed from their sources at setup time — forking someone's skill into your repo buys you a stale copy and nothing else.
+
+Alongside the four layers sits one *place*: [`.agents-workshop/`](workshop.md), where agent output that isn't the product goes — videos, research, prototypes, reports. Not a layer, just a folder with a rule.
 
 ## How to run this
 
@@ -150,13 +176,19 @@ Two rules worth putting in `AGENTS.md`:
 
 **Goal.** A structure that stays legible as agents add to it.
 
-**Keep the root lean.** Agent config (`.agents/`, `.claude/`, `docs/agents/`), the app and service folders, the vision. Everything module-specific — ADRs, `CONTEXT.md`, coding rules, system design — lives in the module folder it describes.
+**Keep the root lean.** Agent config (`.agents/`, `.agents-workshop/`, `.claude/`, `docs/agents/`), the app and service folders, the vision. Everything module-specific — ADRs, `CONTEXT.md`, coding rules, system design — lives in the module folder it describes.
 
 **Split the two docs folders by a testable question.** Root `docs/` is *process*: how we work here. Module `docs/` is *product*: system design, ADRs, domain context.
 
 > Would this doc still be true after the code moves elsewhere? Yes → module docs. No → root docs.
 
 Put that test in `AGENTS.md`. Without it the split erodes in a month.
+
+**Give the agents a place to work.** `.agents-workshop/`, a sibling of `.agents/` — Remotion videos, scratch-pads, long-term shared memory, research notes, throwaway prototypes, generated reports. Never the source tree, never the repo root.
+
+Read [`workshop.md`](workshop.md) for the layout and the reasoning. The short version: `.agents/` travels *in* and is identical everywhere, so it can be re-synced wholesale; `.agents-workshop/` is generated *here* and is irreplaceable. Nesting one in the other loses both properties.
+
+Create it lazily — a folder per skill that needs one, when it needs one. Add `.agents-workshop/` to every gate's ignore file (Phase 5): a throwaway prototype shouldn't fail CI for its complexity score.
 
 **If this is an incubator:** mirror the migration target's relative paths exactly so imports survive the move. Hard-copy lint configs from the target **verbatim**, at the same relative paths, and change them only by resyncing. Match the target's package manager. State all of it in `AGENTS.md` as a rule — every one of these is something a well-meaning agent will "improve".
 

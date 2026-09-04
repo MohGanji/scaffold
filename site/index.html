@@ -265,6 +265,9 @@
       {p:'├── ',     n:'skills',       k:'layer'},
       {p:'│   ├── ', o:'mattpocock',      n:'to-spec · to-tickets · triage · implement · tdd'},
       {p:'│   ├── ', o:'mohganji',        n:'orchestrate · refactoring-guru · no-broken-window'},
+      {p:'│   ├── ', o:'emilkowalski',    n:'apple-design · animate · review-animations'},
+      {p:'│   ├── ', o:'motion.dev',      n:'springs · scroll · gesture · 120fps'},
+      {p:'│   ├── ', o:'remotion',        n:'remotion-create · remotion-render · remotion-studio'},
       {p:'│   ├── ', o:'millionco',       n:'react-doctor · improve-react'},
       {p:'│   ├── ', o:'ericzakariasson', n:'scandinavian-design'},
       {p:'│   └── ', o:'cursor',          n:'thermo-nuclear-code-quality-review · find-critical-bugs'},
@@ -277,7 +280,10 @@
       {p:'│   ├── ', n:'reviewer-{bugs,structure,refactoring,spec}'},
       {p:'│   └── ', n:'review-verdict · human-verdict'},
       {p:'└── ',     n:'environments', k:'layer'},
-      {p:'    └── ', n:'Dockerfile · environment.json · install.sh'}
+      {p:'    └── ', n:'Dockerfile · environment.json · install.sh'},
+      {p:'',         n:'',              k:'gap'},
+      {p:'',         n:'.agents-workshop/', k:'root'},
+      {p:'└── ',     n:'videos · scratch · memory · research · prototypes'}
     ];
 
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -298,6 +304,7 @@
     function pad(s, n){ while(s.length < n) s += ' '; return s; }
 
     function rowHTML(r){
+      if(r.k === 'gap') return '&nbsp;';   // blank spacer between the two roots
       var tree = '  <span class="tree">' + esc(r.p) + '</span>';
       if(r.o){
         // Pad before escaping, or a "&" in an owner would blow the column.
