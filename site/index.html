@@ -85,6 +85,7 @@
   .tree{color:#3a3a3e}
   .layer{color:var(--accent);font-weight:700}
   .leaf{color:var(--fg)}
+  .owner{color:var(--accent);font-weight:500}
   .desc{color:var(--fg-3)}
   .root{color:var(--fg-2);font-weight:700}
   .rdy{color:var(--ok);font-weight:700}
@@ -201,7 +202,7 @@
     <h1>Stop rebuilding<br>the same machinery.</h1>
     <p class="tagline">Point an agent at this repo. <b>Get a software factory.</b></p>
 
-    <div class="term" role="img" aria-label="A terminal. An agent is told to set github.com/MohGanji/scaffold up in this repo, then builds a tree: skills for planning, building, reviewing and design; a guardrail blocking --no-verify; quality gates for lint, dry, crap, react and tests; automations split into workers, review lenses and joiners; and environments. It ends with 'factory ready'.">
+    <div class="term" role="img" aria-label="A terminal. An agent is told to set github.com/MohGanji/scaffold up in this repo, then grows a tree of what gets installed: skills for planning, building, reviewing and design; the no-verify guardrail; gates for cut-the-crap, dry, react-doctor, lint and tests; automations for triage, implementation, four review lenses and two joiners; and the environment files. It ends with 'factory ready'.">
       <div class="term-bar">
         <span class="dot"></span><span class="dot"></span><span class="dot"></span>
         <span class="term-title">~/projects/new-thing</span>
@@ -272,32 +273,33 @@
     // Same sentence as the install section — one entry point, stated once.
     var PROMPT = 'set https://github.com/MohGanji/scaffold up in this repo';
 
-    // p = tree glyphs, n = node name, d = what you get, k = kind
+    // p = tree glyphs, n = the line itself, k = kind.
+    // Leaves name what actually lands in the repo — no descriptions, no counts.
     var TREE = [
-      {p:'',         n:'scaffold/',    d:'',                                      k:'root'},
-      {p:'├── ',     n:'skills',       d:'borrowed, never vendored',              k:'layer'},
-      {p:'│   ├── ', n:'plan',         d:'to-spec · to-tickets · triage'},
-      {p:'│   ├── ', n:'build',        d:'implement · tdd · orchestrate'},
-      {p:'│   ├── ', n:'review',       d:'find-critical-bugs · refactoring-guru'},
-      {p:'│   └── ', n:'design',       d:'design-deliberately · apple-design'},
-      {p:'├── ',     n:'guardrails',   d:'deny before the tool call',             k:'layer'},
-      {p:'│   └── ', n:'no-verify',    d:'blocks --no-verify · exit 2'},
-      {p:'├── ',     n:'gates',        d:'one script, hook + CI',                 k:'layer'},
-      {p:'│   └── ', n:'checks',       d:'lint · dry · crap · react · test'},
-      {p:'├── ',     n:'automations',  d:'ticket → PR → merge',                   k:'layer'},
-      {p:'│   ├── ', n:'workers',      d:'triage-agent · implementer'},
-      {p:'│   ├── ', n:'lenses',       d:'bugs · structure · refactoring · spec'},
-      {p:'│   └── ', n:'joiners',      d:'review-verdict · human-verdict'},
-      {p:'└── ',     n:'environments', d:'gh · glab · probe green',               k:'layer'}
+      {p:'',         n:'.agents/',     k:'root'},
+      {p:'├── ',     n:'skills',       k:'layer'},
+      {p:'│   ├── ', o:'mattpocock',      n:'to-spec · to-tickets · triage · implement · tdd'},
+      {p:'│   ├── ', o:'mohganji',        n:'orchestrate · find-critical-bugs · refactoring-guru'},
+      {p:'│   ├── ', o:'millionco',       n:'react-doctor · improve-react'},
+      {p:'│   ├── ', o:'ericzakariasson', n:'scandinavian-design'},
+      {p:'│   └── ', o:'cursor',          n:'thermo-nuclear-code-quality-review'},
+      {p:'├── ',     n:'guardrails',   k:'layer'},
+      {p:'│   └── ', n:'no-verify-is-not-an-option'},
+      {p:'├── ',     n:'gates',        k:'layer'},
+      {p:'│   └── ', n:'cut-the-crap · dry · react-doctor · lint · tests'},
+      {p:'├── ',     n:'automations',  k:'layer'},
+      {p:'│   ├── ', n:'triage-agent · implementer'},
+      {p:'│   ├── ', n:'reviewer-{bugs,structure,refactoring,spec}'},
+      {p:'│   └── ', n:'review-verdict · human-verdict'},
+      {p:'└── ',     n:'environments', k:'layer'},
+      {p:'    └── ', n:'Dockerfile · environment.json · install.sh'}
     ];
 
-    var COL = 20; // description column, in characters
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var timers = [];
     function after(ms, fn){ timers.push(setTimeout(fn, ms)); }
     function clearAll(){ timers.forEach(clearTimeout); timers = []; }
     function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
-    function pad(s, n){ while(s.length < n) s += ' '; return s; }
 
     function line(html, cls){
       var el = document.createElement('span');
@@ -307,15 +309,18 @@
       return el;
     }
 
+    var OWNER_COL = 17; // widest owner is "ericzakariasson" (15) + breathing room
+    function pad(s, n){ while(s.length < n) s += ' '; return s; }
+
     function rowHTML(r){
-      // Pad before escaping — "&" would become "&amp;" and blow the column math.
-      var nameCls = r.k === 'root' ? 'root' : (r.k === 'layer' ? 'layer' : 'leaf');
-      var head = pad(r.p + r.n, r.d ? COL : 0);
-      var glyphs = esc(head.slice(0, r.p.length));
-      var rest   = esc(head.slice(r.p.length));
-      return '  <span class="tree">' + glyphs + '</span>' +
-             '<span class="' + nameCls + '">' + rest + '</span>' +
-             (r.d ? '<span class="desc">' + esc(r.d) + '</span>' : '');
+      var tree = '  <span class="tree">' + esc(r.p) + '</span>';
+      if(r.o){
+        // Pad before escaping, or a "&" in an owner would blow the column.
+        return tree + '<span class="owner">' + esc(pad(r.o, OWNER_COL)) + '</span>' +
+                      '<span class="leaf">'  + esc(r.n) + '</span>';
+      }
+      var cls = r.k === 'root' ? 'root' : (r.k === 'layer' ? 'layer' : 'leaf');
+      return tree + '<span class="' + cls + '">' + esc(r.n) + '</span>';
     }
 
     function finalState(){
