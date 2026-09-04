@@ -184,7 +184,7 @@ Two rules worth putting in `AGENTS.md`:
 
 Put that test in `AGENTS.md`. Without it the split erodes in a month.
 
-**Give the agents a place to work.** `.agents-workshop/`, a sibling of `.agents/` — Remotion videos, scratch-pads, long-term shared memory, research notes, throwaway prototypes, generated reports. Never the source tree, never the repo root.
+**Give the agents a place to work.** `.agents-workshop/`, a sibling of `.agents/` — long-term shared memory (`braindump/`), scratch-pads, Remotion videos, research notes, throwaway prototypes, generated reports. Never the source tree, never the repo root.
 
 Read [`workshop.md`](workshop.md) for the layout and the reasoning. The short version: `.agents/` travels *in* and is identical everywhere, so it can be re-synced wholesale; `.agents-workshop/` is generated *here* and is irreplaceable. Nesting one in the other loses both properties.
 

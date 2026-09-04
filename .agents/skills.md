@@ -115,6 +115,7 @@ Remotion videos live in [`.agents-workshop/videos/`](workshop.md), one project p
 
 | Skill | Source | What it does |
 | --- | --- | --- |
+| `braindump` | mohganji | Long-term memory. One dense fact per line, appended to a topic file, grepped back next session |
 | `writing-great-skills` | mattpocock | **Load this before writing or editing any skill.** Authoring from memory produces skills that never trigger |
 
 ## Layout

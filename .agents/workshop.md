@@ -2,12 +2,12 @@
 
 Agents need a place to work.
 
-Remotion videos, scratch-pads, long-term shared memories, research notes, throwaway prototypes, generated reports. None of it is your product, all of it is worth keeping, and none of it belongs in your source tree.
+Long-term shared memory, scratch-pads, Remotion videos, research notes, throwaway prototypes, generated reports. None of it is your product, all of it is worth keeping, and none of it belongs in your source tree.
 
 ```
 your-repo/
 ├── .agents/            the factory — how the agents work
-├── .agents-workshop/   where the agents work — videos, scratch-pads, shared memory
+├── .agents-workshop/   where the agents work — braindump, scratch-pads, videos
 ├── src/
 └── package.json
 ```
@@ -34,7 +34,7 @@ The `.agents-` prefix keeps the pairing visible and sorts them adjacent. The sep
 
 | Folder | Holds | Written by |
 | --- | --- | --- |
-| `memory/` | Long-term notes agents share across sessions — decisions made, gotchas hit, approaches already tried and rejected | any agent |
+| `braindump/` | Long-term memory, one dense fact per line, grouped by topic — decisions and their reasons, gotchas, approaches already rejected | `braindump` |
 | `scratch/` | Working files for a task in flight. Safe to delete at any time. | any agent |
 | `videos/` | One Remotion project per video. Launch films, feature demos. | `remotion-*`, `setup-remotion` |
 | `research/` | Findings against primary sources, kept as markdown | `research` |
@@ -44,7 +44,7 @@ The `.agents-` prefix keeps the pairing visible and sorts them adjacent. The sep
 
 Add folders as skills need them. The rule is the test below, not this table.
 
-**`memory/` is the one worth being deliberate about.** It's shared — every agent reads it, any agent may append to it. That makes it the cheapest way to stop the fleet re-deriving the same conclusion every week, and the fastest way to poison it if something wrong gets written down and never re-checked. Date entries, name what they apply to, and delete what stops being true. A memory nobody prunes becomes a memory nobody trusts.
+**`braindump/` is the one worth being deliberate about.** It's shared — every agent reads it, any agent may append to it. That makes it the cheapest way to stop the fleet re-deriving the same conclusion every week, and the fastest way to poison it if something wrong gets written down and never re-checked. Every line is dated, stands on its own, and gets deleted when it stops being true. A memory nobody prunes becomes a memory nobody trusts.
 
 ## The test
 
@@ -85,7 +85,7 @@ Commit the work, ignore the renders and the installs:
 .agents-workshop/scratch/
 ```
 
-Adjust per folder. The default is **commit it** — an agent's research note is worth more in six months than it is today, and it costs kilobytes. `memory/` in particular is worthless uncommitted: shared means shared with the next clone, not just the next session.
+Adjust per folder. The default is **commit it** — an agent's research note is worth more in six months than it is today, and it costs kilobytes. `braindump/` in particular is worthless uncommitted: shared means shared with the next clone, not just the next session.
 
 ## Gates do not run here
 
