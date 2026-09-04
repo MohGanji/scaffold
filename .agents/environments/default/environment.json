@@ -1,0 +1,8 @@
+{
+  "name": "automations",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "install": "bash .agents/environments/default/install.sh"
+}

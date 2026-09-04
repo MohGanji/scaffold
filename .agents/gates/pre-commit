@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Quality gates, run on every commit. Blocking by design.
+#
+# Discovery is by glob: every executable scripts/check-*.sh runs, in name order.
+# Adding a gate is adding a script — nothing to register here. CI runs the same
+# set the same way (.agents/gates/ci/), which is what keeps local and CI honest.
+#
+# Never bypass with --no-verify. That is a guardrail, not a preference:
+# .agents/guardrails/no-verify-is-not-an-option.md
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
+shopt -s nullglob
+gates=(scripts/check-*.sh)
+
+if [ ${#gates[@]} -eq 0 ]; then
+  echo "pre-commit: no gates found (scripts/check-*.sh) — nothing to run."
+  exit 0
+fi
+
+echo "pre-commit: running ${#gates[@]} gate(s)…"
+for gate in "${gates[@]}"; do
+  name="$(basename "$gate" .sh)"
+  name="${name#check-}"
+  if [ ! -x "$gate" ]; then
+    echo "pre-commit: $gate is not executable — chmod +x it." >&2
+    exit 1
+  fi
+  echo "  → $name"
+  "$gate"
+done
+
+echo "pre-commit: all gates passed."

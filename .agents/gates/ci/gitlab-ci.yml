@@ -1,0 +1,27 @@
+# Quality gates. Copy to .gitlab-ci.yml
+#
+# Discovery is by glob, matching .agents/gates/pre-commit exactly. One job runs
+# every scripts/check-*.sh in order. Parity is the point — a commit that passes
+# the hook passes here.
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+stages:
+  - quality
+
+gates:
+  stage: quality
+  image: node:22 # ships python3
+  script:
+    - '[ -f package-lock.json ] && npm ci --no-audit --no-fund || true'
+    - |
+      shopt -s nullglob
+      gates=(scripts/check-*.sh)
+      if [ ${#gates[@]} -eq 0 ]; then echo "No gates found."; exit 0; fi
+      for gate in "${gates[@]}"; do
+        echo "→ $gate"
+        chmod +x "$gate"
+        "$gate"
+      done

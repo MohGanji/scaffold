@@ -1,0 +1,77 @@
+@startuml
+' Reference ticket lifecycle for a full agent fleet.
+'
+' This is a PATTERN, not this repo's instance. Derive your own from it and keep
+' yours in sync in the same commit as any trigger or label-edge change.
+'
+' Read the edges as: who writes this transition. Exactly one automation owns
+' each edge (.agents/automations/README.md § The rules). Reviewers own none.
+
+title Ticket lifecycle — one writer per edge
+
+skinparam state {
+  BackgroundColor #FDFDFD
+  BorderColor #333333
+  FontName sans-serif
+}
+skinparam ArrowColor #555555
+
+[*] --> needs_triage : issue created
+
+state needs_triage as "needs-triage"
+state needs_info as "needs-info"
+state ready_for_agent as "ready-for-agent"
+state agent_review as "agent-review"
+state human_review as "human-review"
+state ready_for_human as "ready-for-human"
+state wontfix as "wontfix"
+state Done
+
+' ── triage-agent owns every edge out of needs-triage ────────────────────────
+needs_triage --> ready_for_agent : **triage-agent**\nbrief written
+needs_triage --> needs_info : **triage-agent**\nmissing information
+needs_triage --> ready_for_human : **triage-agent**\nneeds human judgment
+needs_triage --> wontfix : **triage-agent**
+needs_info --> needs_triage : human answers
+
+' ── implementer owns ready-for-agent → agent-review ─────────────────────────
+ready_for_agent --> agent_review : **implementer**\nopens PR, links ticket
+
+' ── reviewers comment, never label ──────────────────────────────────────────
+state "PR open" as pr #EEEEEE {
+  state "reviewer: correctness" as r1
+  state "reviewer: structure" as r2
+  state "reviewer: refactoring" as r3
+  state "reviewer: spec" as r4
+}
+agent_review --> pr : pr-opened / pr-pushed\nfires every lens independently
+pr --> agent_review : verdicts posted to the ledger\n(no label writes)
+
+' ── review-verdict owns every edge out of agent-review ──────────────────────
+agent_review --> ready_for_agent : **review-verdict**\nfindings to address
+agent_review --> human_review : **review-verdict**\nlenses converged
+
+' ── human-verdict owns every edge out of human-review ───────────────────────
+human_review --> ready_for_agent : **human-verdict**\nchanges requested
+human_review --> Done : **human-verdict**\nafter the *human* merges
+human_review --> human_review : silence — untouched
+
+ready_for_human --> Done : human does the work
+
+note right of human_review
+  **Automations never merge.**
+  Their credentials must not
+  carry merge rights.
+end note
+
+note bottom of pr
+  Lenses are independent.
+  No lens reads another's findings —
+  the independence is the value.
+
+  A joiner fires on every comment and
+  acts only when all lenses have
+  reported for the head sha.
+end note
+
+@enduml

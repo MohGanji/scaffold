@@ -1,0 +1,56 @@
+# Quality gates. Copy to .github/workflows/gates.yml
+#
+# Discovery is by glob, matching .agents/gates/pre-commit exactly: every
+# scripts/check-*.sh becomes its own job. Adding a gate is adding a script.
+# Parity is the point — a commit that passes the hook passes here.
+name: gates
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      gates: ${{ steps.find.outputs.gates }}
+      any: ${{ steps.find.outputs.any }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: find
+        run: |
+          gates=$(find scripts -maxdepth 1 -name 'check-*.sh' -type f 2>/dev/null \
+            | sort | jq -R . | jq -sc .)
+          [ "$gates" = "" ] && gates='[]'
+          echo "gates=$gates" >> "$GITHUB_OUTPUT"
+          echo "any=$([ "$gates" = '[]' ] && echo false || echo true)" >> "$GITHUB_OUTPUT"
+          echo "Discovered: $gates"
+
+  gate:
+    needs: discover
+    if: needs.discover.outputs.any == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        gate: ${{ fromJSON(needs.discover.outputs.gates) }}
+    name: ${{ matrix.gate }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: install
+        run: |
+          [ -f package-lock.json ] && npm ci --no-audit --no-fund || true
+      - name: run gate
+        run: |
+          chmod +x "${{ matrix.gate }}"
+          "${{ matrix.gate }}"

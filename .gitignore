@@ -1,0 +1,8 @@
+# Skills are borrowed, never vendored. This is a destination, not content.
+.agents/skills/
+.claude/skills/
+skills-lock.json
+
+.DS_Store
+node_modules/
+*.log

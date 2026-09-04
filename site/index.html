@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>scaffold — point an agent at a repo, get a software factory</title>
+<meta name="description" content="One folder that scaffolds an entire agentic factory: skills, guardrails, quality gates, and a fleet of cloud agents that moves work from ticket to merge.">
+<meta property="og:title" content="scaffold">
+<meta property="og:description" content="Point an agent at this repo. Get a software factory.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b0b0c'/><g stroke='%23e0a84b' stroke-width='9' stroke-linecap='round'><path d='M26 74V32M74 74V32M26 45h48M26 61h48'/></g></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0b0c;
+    --bg-2:#111113;
+    --line:#232326;
+    --line-soft:#1a1a1d;
+    --fg:#ededec;
+    --fg-2:#a4a4a0;
+    --fg-3:#6f6f6b;
+    --accent:#e0a84b;
+    --ok:#7fbf7f;
+    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    --max:920px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--fg);
+    font-family:var(--sans);font-size:16px;line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(224,168,75,.07),transparent 70%);
+    background-repeat:no-repeat;
+  }
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  a{color:inherit}
+  h1,h2,h3{line-height:1.15;letter-spacing:-.02em;margin:0}
+  code{font-family:var(--mono);font-size:.9em}
+
+  /* ---------- hero ---------- */
+  header{padding:88px 0 12px;text-align:center}
+  .mark{
+    display:inline-flex;align-items:center;gap:11px;
+    font-family:var(--mono);font-weight:700;font-size:15px;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+    margin-bottom:30px;
+  }
+  .mark svg{width:19px;height:19px;display:block}
+  h1{font-size:clamp(2.6rem,7.5vw,4.4rem);font-weight:700;letter-spacing:-.035em}
+  .tagline{
+    margin:22px auto 0;max-width:44ch;text-wrap:balance;
+    font-size:clamp(1.05rem,2.6vw,1.3rem);color:var(--fg-2);font-weight:400;
+  }
+  .tagline b{white-space:nowrap}
+  .tagline b{color:var(--fg);font-weight:600}
+
+  /* ---------- terminal ---------- */
+  .term{
+    margin:52px 0 0;background:var(--bg-2);
+    border:1px solid var(--line);border-radius:11px;
+    box-shadow:0 24px 70px -28px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.015) inset;
+    overflow:hidden;text-align:left;
+  }
+  .term-bar{
+    display:flex;align-items:center;gap:7px;
+    padding:12px 15px;border-bottom:1px solid var(--line-soft);
+    background:rgba(255,255,255,.015);
+  }
+  .dot{width:11px;height:11px;border-radius:50%;background:#2e2e32;flex:none}
+  .term-title{
+    margin-left:8px;font-family:var(--mono);font-size:12px;color:var(--fg-3);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .term-body{
+    font-family:var(--mono);font-size:13.5px;line-height:1.85;
+    padding:20px 20px 24px;min-height:432px;
+    overflow-x:auto;
+  }
+  @media (max-width:560px){ .term-body{font-size:11.5px;min-height:388px;padding:16px} }
+  .ln{white-space:pre;display:block}
+  .ln .pr{color:var(--accent)}
+  .ln .usr{color:var(--fg)}
+  .ln .dim{color:var(--fg-3)}
+  .ln .lbl{color:var(--fg-2)}
+  .ln .val{color:var(--fg)}
+  .ln .ok{color:var(--ok)}
+  .ln .acc{color:var(--accent)}
+  .ln.done{color:var(--fg-2)}
+  .cursor{
+    display:inline-block;width:8px;height:1.05em;
+    background:var(--accent);vertical-align:text-bottom;
+    animation:blink 1.05s step-end infinite;
+  }
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+  .spin{color:var(--accent)}
+
+  /* ---------- generic sections ---------- */
+  section{padding:76px 0;border-top:1px solid var(--line-soft)}
+  section:first-of-type{border-top:0}
+  .eyebrow{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.19em;
+    text-transform:uppercase;color:var(--fg-3);margin-bottom:16px;
+  }
+  h2{font-size:clamp(1.6rem,4vw,2.1rem);font-weight:650;max-width:22ch}
+  .lede{margin:16px 0 0;color:var(--fg-2);max-width:60ch;font-size:1.05rem}
+
+  /* ---------- layers ---------- */
+  .layers{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;margin-top:38px;
+    background:var(--line-soft);border:1px solid var(--line-soft);border-radius:11px;overflow:hidden}
+  @media (max-width:640px){.layers{grid-template-columns:1fr}}
+  .layer{background:var(--bg);padding:26px 24px;transition:background .18s}
+  .layer:hover{background:var(--bg-2)}
+  .layer h3{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--accent);
+    letter-spacing:.04em;margin-bottom:9px}
+  .layer p{margin:0;color:var(--fg-2);font-size:.95rem}
+  .layer p em{color:var(--fg);font-style:normal;font-weight:600}
+
+  /* ---------- principles ---------- */
+  .principles{margin-top:40px;display:grid;gap:30px}
+  .principle{padding-left:20px;border-left:2px solid var(--line)}
+  .principle:hover{border-left-color:var(--accent)}
+  .principle h3{font-size:1.12rem;font-weight:650;margin-bottom:8px}
+  .principle p{margin:0;color:var(--fg-2);font-size:.97rem;max-width:64ch}
+
+  /* ---------- phases ---------- */
+  .phases{margin-top:36px;border-top:1px solid var(--line-soft)}
+  .phase{display:grid;grid-template-columns:44px 1fr auto;gap:18px;align-items:baseline;
+    padding:14px 4px;border-bottom:1px solid var(--line-soft)}
+  .phase-n{font-family:var(--mono);font-size:12px;color:var(--fg-3)}
+  .phase-name{font-weight:550;font-size:1rem}
+  .phase-note{color:var(--fg-3);font-size:.88rem;text-align:right}
+  @media (max-width:600px){
+    .phase{grid-template-columns:36px 1fr;gap:12px}
+    .phase-note{grid-column:2;text-align:left;padding-top:2px}
+  }
+
+  /* ---------- install ---------- */
+  .cmd{
+    margin-top:26px;background:var(--bg-2);border:1px solid var(--line);
+    border-radius:9px;padding:17px 20px;font-family:var(--mono);font-size:13.5px;
+    display:flex;align-items:center;gap:13px;overflow-x:auto;
+  }
+  .cmd .pr{color:var(--accent);flex:none;user-select:none}
+  .cmd code{white-space:pre;color:var(--fg)}
+  .steps{margin-top:34px;display:grid;gap:16px;counter-reset:s}
+  .step{display:flex;gap:16px;align-items:flex-start}
+  .step-n{flex:none;width:25px;height:25px;border-radius:50%;border:1px solid var(--line);
+    display:grid;place-items:center;font-family:var(--mono);font-size:11.5px;color:var(--fg-3);margin-top:2px}
+  .step p{margin:0;color:var(--fg-2)}
+  .step p b{color:var(--fg);font-weight:600}
+  .step code{background:var(--bg-2);border:1px solid var(--line-soft);
+    padding:2px 6px;border-radius:5px;color:var(--fg)}
+
+  /* ---------- cta / footer ---------- */
+  .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+  .btn{
+    display:inline-flex;align-items:center;gap:9px;
+    padding:12px 21px;border-radius:8px;text-decoration:none;
+    font-size:.94rem;font-weight:550;transition:all .16s;
+  }
+  .btn-primary{background:var(--accent);color:#151006;border:1px solid var(--accent)}
+  .btn-primary:hover{filter:brightness(1.09)}
+  .btn-ghost{border:1px solid var(--line);color:var(--fg-2)}
+  .btn-ghost:hover{border-color:var(--fg-3);color:var(--fg)}
+  footer{
+    padding:44px 0 60px;border-top:1px solid var(--line-soft);
+    color:var(--fg-3);font-size:.87rem;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;
+  }
+  footer a{color:var(--fg-2);text-decoration:none}
+  footer a:hover{color:var(--accent)}
+
+  @media (prefers-reduced-motion:reduce){
+    .cursor{animation:none}
+    *{transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <div class="mark">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><g stroke="currentColor" stroke-width="9" stroke-linecap="round" fill="none"><path d="M26 74V32M74 74V32M26 45h48M26 61h48"/></g></svg>
+      scaffold
+    </div>
+    <h1>Stop rebuilding<br>the same machinery.</h1>
+    <p class="tagline">Point an agent at this repo. <b>Get a software factory.</b></p>
+
+    <div class="term" role="img" aria-label="Terminal showing an agent setting up a repository through ten phases: preflight, entry point, skills, tracker, repo shape, gates, guardrails, domain model, automations and environments — ending with the factory ready.">
+      <div class="term-bar">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="term-title">~/projects/new-thing</span>
+      </div>
+      <div class="term-body" id="term"></div>
+    </div>
+  </header>
+
+  <section>
+    <div class="eyebrow">The shape of it</div>
+    <h2>Four layers. Each answers one question.</h2>
+    <p class="lede">Keep them separate and none of them rots. Collapse them and you get a folder of prompts nobody trusts.</p>
+    <div class="layers">
+      <div class="layer">
+        <h3>SKILLS</h3>
+        <p><em>How</em> is the work done? Borrowed from their sources, never forked into your repo.</p>
+      </div>
+      <div class="layer">
+        <h3>GUARDRAILS</h3>
+        <p>What may an agent <em>never</em> do? Enforced before the tool call, not after the commit.</p>
+      </div>
+      <div class="layer">
+        <h3>GATES</h3>
+        <p>What must be true to <em>commit</em>? One script per gate. Same script in the hook and in CI.</p>
+      </div>
+      <div class="layer">
+        <h3>AUTOMATIONS</h3>
+        <p><em>When</em>, and as <em>whom</em>, does an agent run? Ticket to PR to merge, no dispatcher.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Design decisions</div>
+    <h2>Three things that make it hold.</h2>
+    <div class="principles">
+      <div class="principle">
+        <h3>Skills are borrowed, never vendored.</h3>
+        <p>Scaffold ships a list, not files. Fork someone's skill into your repo and you own a stale copy — a content hash tells you <em>that</em> upstream changed, never what it broke. So the factory points at sources and installs fresh.</p>
+      </div>
+      <div class="principle">
+        <h3>Automations ship as patterns, not instances.</h3>
+        <p>Every ticket key, label string and host path inside an automation belongs to the repo that wrote it. A copied one still pointing at another project's epic will happily file your tickets there. So you derive yours from the conventions instead of inheriting someone's.</p>
+      </div>
+      <div class="principle">
+        <h3>Guardrails fail closed.</h3>
+        <p>Agent hooks fail <em>open</em> on more than one harness — malformed JSON silently allows the command. So the deny path is <code>exit&nbsp;2</code>, the commit gate never goes away, and setup reports a coverage table instead of claiming success. A silent success is indistinguishable from a fail-open.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">The installer</div>
+    <h2>Ten phases, one decision at a time.</h2>
+    <p class="lede">A conversation, not a script. It explores what's already there, reports it, and commits each phase on its own before moving to the next.</p>
+    <div class="phases">
+      <div class="phase"><span class="phase-n">00</span><span class="phase-name">Preflight</span><span class="phase-note">host, stack, what already exists</span></div>
+      <div class="phase"><span class="phase-n">01</span><span class="phase-name">Entry point</span><span class="phase-note">AGENTS.md, symlinked to CLAUDE.md</span></div>
+      <div class="phase"><span class="phase-n">02</span><span class="phase-name">Skills</span><span class="phase-note">borrow, then curate hard</span></div>
+      <div class="phase"><span class="phase-n">03</span><span class="phase-name">Tracker &amp; docs</span><span class="phase-note">where work lives, what labels mean</span></div>
+      <div class="phase"><span class="phase-n">04</span><span class="phase-name">Repo shape</span><span class="phase-note">rules, not a directory tree</span></div>
+      <div class="phase"><span class="phase-n">05</span><span class="phase-name">Gates</span><span class="phase-note">one command, hook and CI, blocking</span></div>
+      <div class="phase"><span class="phase-n">06</span><span class="phase-name">Guardrails</span><span class="phase-note">prose becomes deterministic</span></div>
+      <div class="phase"><span class="phase-n">07</span><span class="phase-name">Domain model</span><span class="phase-note">glossary, ADRs, invariants</span></div>
+      <div class="phase"><span class="phase-n">08</span><span class="phase-name">Automations</span><span class="phase-note">the fleet — after gates, never before</span></div>
+      <div class="phase"><span class="phase-n">09</span><span class="phase-name">Environments</span><span class="phase-note">the sandbox they boot into</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Install</div>
+    <h2>Copy one folder. Say one sentence.</h2>
+    <div class="cmd"><span class="pr">$</span><code>npx skills@latest add mohganji/skills</code></div>
+    <div class="steps">
+      <div class="step">
+        <span class="step-n">1</span>
+        <p>Copy <code>.agents/</code> into your repo. <b>That's the whole payload.</b></p>
+      </div>
+      <div class="step">
+        <span class="step-n">2</span>
+        <p>Tell your agent: <b>“Read <code>.agents/scaffold.md</code> and set this repo up.”</b></p>
+      </div>
+      <div class="step">
+        <span class="step-n">3</span>
+        <p>Answer one question at a time. Each phase commits before the next begins.</p>
+      </div>
+    </div>
+    <p class="lede" style="margin-top:30px">Works on Claude Code, Cursor and Codex. Everything is defined once, harness-neutral, and adapted at the edge.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="https://github.com/MohGanji/scaffold">Get scaffold →</a>
+      <a class="btn btn-ghost" href="https://github.com/MohGanji/scaffold/blob/main/.agents/scaffold.md">Read the installer</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>MIT · built by <a href="https://github.com/MohGanji">MohGanji</a></span>
+    <span><a href="https://github.com/MohGanji/scaffold">github.com/MohGanji/scaffold</a></span>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var term = document.getElementById('term');
+  if(!term) return;
+
+  var PROMPT = 'Read .agents/scaffold.md and set this repo up.';
+
+  var PHASES = [
+    ['00','Preflight',     'github · node · standalone'],
+    ['01','Entry point',   'AGENTS.md ← CLAUDE.md'],
+    ['02','Skills',        '14 borrowed, 20 skipped'],
+    ['03','Tracker & docs','GitHub Issues · 7 labels'],
+    ['04','Repo shape',    'rules written to AGENTS.md'],
+    ['05','Gates',         'lint · dry · crap · test'],
+    ['06','Guardrails',    '1 enforced, 0 degraded'],
+    ['07','Domain model',  'CONTEXT.md · 3 ADRs'],
+    ['08','Automations',   '9 derived · 0 inherited'],
+    ['09','Environments',  'probe green'],
+  ];
+
+  var SPIN = ['⠋','⠙','⠹','⠸','⠼','⠴','⠦','⠧','⠇','⠏'];
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var timers = [];
+  function after(ms, fn){ timers.push(setTimeout(fn, ms)); }
+  function clearAll(){ timers.forEach(clearTimeout); timers = []; }
+
+  function line(html, cls){
+    var el = document.createElement('span');
+    el.className = 'ln' + (cls ? ' ' + cls : '');
+    el.innerHTML = html;
+    term.appendChild(el);
+    return el;
+  }
+  function pad(s, n){ while(s.length < n) s += ' '; return s; }
+  function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+  function phaseHTML(p, state){
+    var icon = state === 'done'
+      ? '<span class="ok">✔</span>'
+      : '<span class="spin">' + state + '</span>';
+    // Pad before escaping — "&" becomes "&amp;" and would blow the column math.
+    return '  ' + icon + '  <span class="dim">' + p[0] + '</span>  ' +
+           '<span class="lbl">' + esc(pad(p[1], 17)) + '</span>' +
+           '<span class="' + (state === 'done' ? 'val' : 'dim') + '">' + esc(p[2]) + '</span>';
+  }
+
+  function finalState(){
+    term.innerHTML = '';
+    line('<span class="pr">$</span> <span class="dim">claude</span>');
+    line('<span class="pr">&gt;</span> <span class="usr">' + esc(PROMPT) + '</span>');
+    line('&nbsp;');
+    PHASES.forEach(function(p){ line(phaseHTML(p, 'done')); });
+    line('&nbsp;');
+    line('  <span class="acc">factory ready.</span>  <span class="dim">10 phases · 10 commits</span>');
+  }
+
+  function run(){
+    clearAll();
+    term.innerHTML = '';
+
+    line('<span class="pr">$</span> <span class="dim">claude</span>');
+
+    var typed = line('<span class="pr">&gt;</span> <span class="usr"></span><span class="cursor"></span>');
+    var slot  = typed.querySelector('.usr');
+    var cur   = typed.querySelector('.cursor');
+
+    var i = 0;
+    (function type(){
+      if(i <= PROMPT.length){
+        slot.textContent = PROMPT.slice(0, i);
+        i++;
+        after(26 + Math.random()*34, type);
+      } else {
+        cur.remove();
+        after(430, phases);
+      }
+    })();
+
+    function phases(){
+      line('&nbsp;');
+      var idx = 0;
+      (function next(){
+        if(idx >= PHASES.length) return done();
+        var p  = PHASES[idx];
+        var el = line(phaseHTML(p, SPIN[0]));
+        var s  = 0;
+        var iv = setInterval(function(){
+          s = (s + 1) % SPIN.length;
+          el.innerHTML = phaseHTML(p, SPIN[s]);
+        }, 72);
+        timers.push(iv);
+        after(340 + Math.random()*260, function(){
+          clearInterval(iv);
+          el.innerHTML = phaseHTML(p, 'done');
+          el.classList.add('done');
+          idx++;
+          next();
+        });
+      })();
+    }
+
+    function done(){
+      after(300, function(){
+        line('&nbsp;');
+        line('  <span class="acc">factory ready.</span>  <span class="dim">10 phases · 10 commits</span>');
+        after(6200, run);
+      });
+    }
+  }
+
+  if(reduce){ finalState(); return; }
+
+  // Start once the terminal is actually on screen. Background tabs are
+  // throttled by the browser, which is enough — restarting on tab-return
+  // would just yank the demo back to the top mid-run.
+  var started = false;
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting && !started){ started = true; run(); }
+      });
+    }, {threshold:.15}).observe(term);
+  } else {
+    run();
+  }
+})();
+</script>
+
+</body>
+</html>
