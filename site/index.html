@@ -120,10 +120,6 @@
     transition:background .2s,box-shadow .2s;
   }
   .node:hover .pip::after{background:var(--accent);box-shadow:0 0 12px var(--accent)}
-  .node .when{
-    font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
-    text-transform:uppercase;color:var(--fg-3);margin-bottom:9px;
-  }
   .node .name{
     font-family:var(--mono);font-size:14px;font-weight:700;letter-spacing:.03em;
     color:var(--accent);margin-bottom:8px;
@@ -136,7 +132,6 @@
       background:linear-gradient(180deg,var(--line),var(--accent),var(--accent),var(--line))}
     .node{text-align:left;padding:0 0 26px 36px}
     .node .pip{position:absolute;left:0;top:0;margin:0}
-    .node .when{margin-bottom:5px}
   }
 
   /* ---------- install ---------- */
@@ -210,27 +205,23 @@
     <div class="flow">
       <div class="node">
         <div class="pip"></div>
-        <div class="when">always</div>
         <div class="name">SKILLS</div>
-        <div class="what"><b>How</b> the work is done. Borrowed, never forked.</div>
+        <div class="what"><b>How the work is done.</b> Borrow the best agent skills on the internet.</div>
       </div>
       <div class="node">
         <div class="pip"></div>
-        <div class="when">before the call</div>
         <div class="name">GUARDRAILS</div>
-        <div class="what">What an agent may <b>never</b> do. Deny, fail closed.</div>
+        <div class="what"><b>What an agent may never do.</b> Hard fail when attempted.</div>
       </div>
       <div class="node">
         <div class="pip"></div>
-        <div class="when">at the commit</div>
         <div class="name">GATES</div>
-        <div class="what">What must be <b>true</b> to ship. Hook and CI, one script.</div>
+        <div class="what"><b>Enforce quality deterministically.</b> Pre-commit hooks and CI scripts.</div>
       </div>
       <div class="node">
         <div class="pip"></div>
-        <div class="when">after the push</div>
         <div class="name">AUTOMATIONS</div>
-        <div class="what"><b>When</b>, and as <b>whom</b>. Ticket to PR to merge.</div>
+        <div class="what"><b>Prebuilt cloud agent templates</b> that run on triggers or crons.</div>
       </div>
     </div>
   </section>
@@ -245,7 +236,7 @@
 
   <footer>
     <span>MIT · built by <a href="https://github.com/MohGanji">MohGanji</a></span>
-    <span>Claude Code · Cursor · Codex</span>
+    <span>Claude Code · Cursor · Codex · Antigravity</span>
   </footer>
 
 </div>
