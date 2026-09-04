@@ -36,7 +36,24 @@
     background-image:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(224,168,75,.07),transparent 70%);
     background-repeat:no-repeat;
   }
-  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+
+  /* Blueprint grid with a joint marked at every intersection — scaffolding,
+     stated by the backdrop rather than in words. Fixed, so it reads as a
+     drafting surface the page sits on. Masked to fade before it competes
+     with anything. */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:
+      linear-gradient(to right,  rgba(255,255,255,.040) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,.040) 1px, transparent 1px),
+      radial-gradient(circle at 1px 1px, rgba(224,168,75,.34) 1.2px, transparent 1.7px);
+    background-size:72px 72px, 72px 72px, 72px 72px;
+    background-position:center -1px, center -1px, center -1px;
+    -webkit-mask-image:radial-gradient(ellipse 95% 78% at 50% 2%, #000 30%, transparent 85%);
+            mask-image:radial-gradient(ellipse 95% 78% at 50% 2%, #000 30%, transparent 85%);
+  }
+
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px;position:relative;z-index:1}
   a{color:inherit}
   h1,h2{line-height:1.1;letter-spacing:-.015em;margin:0;font-optical-sizing:auto}
   code{font-family:var(--mono)}
