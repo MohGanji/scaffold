@@ -14,11 +14,15 @@ Starting a project means rebuilding the same machinery every time. Entry point. 
 
 Scaffold is that machinery, in one folder.
 
+Send this to your agent, in any repo:
+
 ```
-Read .agents/scaffold.md and set this repo up.
+set https://github.com/MohGanji/scaffold up
 ```
 
-Ten phases, one decision at a time. You get an agent entry point, a curated skill set, quality gates wired into both the commit hook and CI, guardrails that fire before a tool call instead of after, and a fleet of cloud agents that moves work from ticket to merge without you dispatching each step.
+It does the rest — pulls the folder in, installs the skills, wires the hooks and CI, and walks ten phases one decision at a time. You answer questions.
+
+What you end up with: an agent entry point, a curated skill set, quality gates wired into both the commit hook and CI, guardrails that fire before a tool call instead of after, and a fleet of cloud agents that moves work from ticket to merge without you dispatching each step.
 
 ## Four layers
 
@@ -39,17 +43,11 @@ Keep them separate and none of them rots.
 
 **Guardrails fail closed.** Hooks fail *open* on more than one harness — malformed JSON silently allows the command. So the deny path is `exit 2`, the commit gate never goes away, and setup reports a coverage table instead of claiming success.
 
-## Install
+## Works everywhere
 
-Copy `.agents/` into your repo. That's the whole payload.
+Claude Code, Cursor, Codex. Skills, guardrails and automations are defined once, harness-neutral, and adapted at the edge.
 
-```bash
-npx skills@latest add mohganji/skills
-```
-
-Then tell your agent to read [`.agents/scaffold.md`](.agents/scaffold.md).
-
-Works on Claude Code, Cursor and Codex. Skills, guardrails and automations are defined once, harness-neutral, and adapted at the edge.
+`.agents/` is the whole payload — the agent copies it in and never needs this repo again.
 
 ## Verify
 

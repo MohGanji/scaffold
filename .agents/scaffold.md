@@ -2,11 +2,23 @@
 
 Turn a repo into a software factory. Entry point, skills, gates, guardrails, domain docs, and a fleet of cloud agents that move work from ticket to merge.
 
-This file is the installer. Hand it to an agent in a fresh repo:
+This file is the installer.
 
-> Read `.agents/scaffold.md` and set this repo up.
+## Getting here
 
-Everything travels by copying `.agents/`. This file is the map.
+**If you were pointed at this from another repo** — the user said something like *"set https://github.com/MohGanji/scaffold up"* — you're reading this remotely. Bring it in first, then start at Phase 0:
+
+```bash
+git clone --depth 1 https://github.com/MohGanji/scaffold /tmp/scaffold
+cp -R /tmp/scaffold/.agents <target-repo>/
+rm -rf /tmp/scaffold
+```
+
+That's the whole payload. The target repo never needs this repo again.
+
+Don't copy `README.md`, `site/` or the workflow in `.github/` — those belong to scaffold itself, not to the repo you're setting up.
+
+**If `.agents/` is already here**, you're in the right place. Start at Phase 0.
 
 ## The four layers
 
