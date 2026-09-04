@@ -383,7 +383,7 @@
       {p:'└── ',     n:'braindump · docs · scratchpad · videos · research'}
     ];
 
-    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var reduce = true;
     var timers = [];
     function after(ms, fn){ timers.push(setTimeout(fn, ms)); }
     function clearAll(){ timers.forEach(clearTimeout); timers = []; }
