@@ -68,41 +68,42 @@
   .desk svg{position:absolute;stroke:var(--desk-line);fill:none;stroke-width:1.1}
   @media (max-width:1240px){ .desk{display:none} }
 
-  /* The sheet. Grid is printed on it, so it scrolls with the paper instead of
-     sitting still behind it. */
+  /* The sheet is scenery, not a container. A fixed band down the middle of
+     the desk, bleeding past the top and bottom of the frame the way a large
+     print does — the content simply happens to fall on it as it scrolls by.
+     Make it scroll with the content and it stops being a sheet and starts
+     being a card. */
   .sheet{
-    position:relative;z-index:1;
-    max-width:var(--sheet-max);margin:40px auto 0;
+    position:fixed;z-index:0;pointer-events:none;
+    top:-60px;bottom:-60px;left:50%;transform:translateX(-50%);
+    width:min(var(--sheet-max), 100%);
     background-color:var(--bg);
     background-image:
       linear-gradient(to right,  rgba(198,226,244,.075) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(198,226,244,.075) 1px, transparent 1px),
       radial-gradient(circle at 1px 1px, rgba(229,172,87,.34) 1.3px, transparent 1.8px);
     background-size:72px 72px;
-    background-position:36px 36px;
+    background-position:36px 96px;
     box-shadow:
-      0 1px 2px rgba(46,41,31,.14),
-      0 10px 22px -8px rgba(46,41,31,.20),
-      0 44px 90px -36px rgba(46,41,31,.38);
+      -16px 0 34px -14px rgba(46,41,31,.34),
+       16px 0 34px -14px rgba(46,41,31,.34);
   }
-  /* Lamp falling across the top edge of the print, and a paper tooth over it. */
-  .sheet::before{
-    content:"";position:absolute;inset:0;pointer-events:none;
+  /* Lamp across the top of the print, and paper tooth over the whole face. */
+  .sheet::after{
+    content:"";position:absolute;inset:0;
     background:
-      radial-gradient(ellipse 70% 34% at 50% 0%, rgba(255,226,178,.10), transparent 70%),
+      radial-gradient(ellipse 72% 26% at 50% 0%, rgba(255,226,178,.11), transparent 72%),
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23m)' opacity='.35'/%3E%3C/svg%3E");
     opacity:.55;
   }
-  .sheet > *{position:relative;z-index:1}
-  @media (max-width:1140px){ .sheet{margin-top:0} }
 
-  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px;position:relative;z-index:1}
   a{color:inherit}
   h1,h2{font-family:var(--display);line-height:1.16;letter-spacing:-.03em;margin:0}
   code{font-family:var(--mono)}
 
   /* ---------- hero ---------- */
-  header{padding:72px 0 0;text-align:center}
+  header{padding:84px 0 0;text-align:center}
   .mark{
     display:inline-flex;align-items:center;gap:11px;
     font-family:var(--display);font-weight:400;font-size:14px;
@@ -157,7 +158,6 @@
 
   /* ---------- section ---------- */
   section{padding:82px 0 0}
-  section:last-of-type{padding-bottom:88px}
   h2{font-size:clamp(1.3rem,3.1vw,1.75rem);font-weight:400;max-width:46ch}
 
   /* ---------- flow: when each layer fires ---------- */
@@ -224,15 +224,13 @@
   /* inline, not inline-flex — keeps the mark on the text baseline */
   .repo svg{width:1em;height:1em;vertical-align:-.13em;margin-right:.34em;fill:currentColor}
 
-  /* Off the print, onto the desk — so the page ends on the wood, not the paper. */
   footer{
-    position:relative;z-index:1;
-    max-width:var(--sheet-max);margin:0 auto;padding:26px 24px 54px;
-    color:var(--desk-ink-2);font-size:.86rem;
+    margin-top:82px;padding:30px 0 64px;border-top:1px solid var(--line-soft);
+    color:var(--fg-3);font-size:.86rem;
     display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
   }
-  footer a{color:var(--desk-ink);text-decoration:none;border-bottom:1px solid rgba(87,84,76,.3)}
-  footer a:hover{color:#2f2d28;border-bottom-color:#2f2d28}
+  footer a{color:var(--fg-2);text-decoration:none}
+  footer a:hover{color:var(--accent)}
 
   @media (prefers-reduced-motion:reduce){
     .cursor{animation:none}
@@ -284,7 +282,8 @@
   </svg>
 </div>
 
-<div class="sheet">
+<div class="sheet" aria-hidden="true"></div>
+
 <div class="wrap">
 
   <header>
@@ -339,13 +338,12 @@
     </div>
   </section>
 
-</div>
-</div>
+  <footer>
+    <span>MIT · built by <a href="https://x.com/ganjidotme">@ganjidotme</a></span>
+    <span>Claude Code · Cursor · Codex · Antigravity</span>
+  </footer>
 
-<footer>
-  <span>MIT · built by <a href="https://x.com/ganjidotme">@ganjidotme</a></span>
-  <span>Claude Code · Cursor · Codex · Antigravity</span>
-</footer>
+</div>
 
 <script>
 (function(){
