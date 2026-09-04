@@ -34,6 +34,7 @@ The `.agents-` prefix keeps the pairing visible and sorts them adjacent. The sep
 
 | Folder | Holds | Written by |
 | --- | --- | --- |
+| `docs/` | Agent-facing project docs — issue tracker, triage labels, domain layout | `setup-matt-pocock-skills` |
 | `braindump/` | Long-term memory, one dense fact per line, grouped by topic — decisions and their reasons, gotchas, approaches already rejected | `braindump` |
 | `scratch/` | Working files for a task in flight. Safe to delete at any time. | any agent |
 | `videos/` | One Remotion project per video. Launch films, feature demos. | `remotion-*`, `setup-remotion` |

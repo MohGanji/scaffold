@@ -38,7 +38,7 @@ context, the rule is misconfigured — exit silently. Never hunt for work.
 If the ticket has already been triaged since entering this state, exit silently.
 
 Then run the `triage` skill on exactly that ticket, using the vocabulary in
-`docs/agents/triage-labels.md` and `docs/agents/issue-tracker.md`.
+`.agents-workshop/docs/triage-labels.md` and `.agents-workshop/docs/issue-tracker.md`.
 ```
 
 That's the whole format. The body is prose an agent reads, not config.
@@ -86,7 +86,7 @@ Described by meaning. The setup contract maps them to whatever the platform call
 - `on: pr-approved` — a human approved.
 - `on: pr-merged` — merged.
 - `on: pr-comment` — a top-level comment was added.
-- `on: webhook(tracker: <rule>)` — the tracker rings a private webhook endpoint. `<rule>` describes the tracker-side condition by meaning; the rule itself lives in the tracker's automation config, documented in `docs/agents/issue-tracker.md`.
+- `on: webhook(tracker: <rule>)` — the tracker rings a private webhook endpoint. `<rule>` describes the tracker-side condition by meaning; the rule itself lives in the tracker's automation config, documented in `.agents-workshop/docs/issue-tracker.md`.
 - `schedule: "<cron>"` — plain cron, standalone only.
 
 ## Scoped fires
@@ -175,4 +175,4 @@ Before adding a script here, ask: **does any step need judgment?**
 - `triggers` use the vocabulary above, always by meaning, never a platform's UI label.
 - `model` names a **capability tier** (`haiku` < `sonnet` < `opus` < `fable`), not a vendor model id. The platform maps it. Judgment-heavy work — implementation, bug and structure review — gets the strongest tier. Joins and checklists don't.
 - `tools` name capabilities (`gh`, `glab`, tracker MCP), not platform connector IDs.
-- Repo context — tracker conventions, label vocabulary — is referenced from `docs/agents/`, never duplicated here.
+- Repo context — tracker conventions, label vocabulary — is referenced from `.agents-workshop/docs/`, never duplicated here.

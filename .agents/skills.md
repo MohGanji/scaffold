@@ -40,7 +40,7 @@ Run once, then mark as already-run in `AGENTS.md` so agents don't helpfully re-r
 | Skill | Source | What it does |
 | --- | --- | --- |
 | `bootstrap-agentic-repo` | mohganji | Detects the stack, installs every skill source, walks the setup skills |
-| `setup-matt-pocock-skills` | mattpocock | Writes `docs/agents/` — tracker, labels, domain docs (Phase 3) |
+| `setup-matt-pocock-skills` | mattpocock | Writes `.agents-workshop/docs/` — tracker, labels, domain docs (Phase 3) |
 | `setup-crap-check` | mohganji | CRAP-score gate, hook + CI |
 | `setup-dry` | mohganji | Structural-duplication gate, hook + CI |
 | `setup-react-doctor` | mohganji | React quality gate, hook + CI |

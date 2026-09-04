@@ -157,7 +157,11 @@ Two rules worth putting in `AGENTS.md`:
 
 **Goal.** Agents know where issues live, what the labels mean, where the domain docs are.
 
-**Delegate.** Run `/setup-matt-pocock-skills`. It asks three questions and writes `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, `docs/agents/domain.md`. Don't hand-write these — the skills read them at fixed paths.
+**Delegate.** Run `/setup-matt-pocock-skills`. It asks three questions and writes an issue-tracker doc, a triage-labels doc and a domain doc. Don't hand-write these — they exist so the skills have one place to look.
+
+**Nudge it to write them into `.agents-workshop/docs/`** rather than its default `docs/agents/`. Keeps the root lean and puts agent-facing docs with the rest of the agent-facing material.
+
+This is safe because the path is indirect: the consuming skills (`triage`, `to-tickets`, `tdd`, …) never reference the location. They read the `## Agent skills` block the setup skill writes into `AGENTS.md`, which names the files. Point that block at the new path and everything downstream follows.
 
 **Decisions it surfaces.**
 - **Tracker** — GitHub Issues, GitLab Issues, local markdown, or Jira/Linear described as prose. Pick where work is *actually* tracked, not where it should be.
@@ -176,7 +180,7 @@ Two rules worth putting in `AGENTS.md`:
 
 **Goal.** A structure that stays legible as agents add to it.
 
-**Keep the root lean.** Agent config (`.agents/`, `.agents-workshop/`, `.claude/`, `docs/agents/`), the app and service folders, the vision. Everything module-specific — ADRs, `CONTEXT.md`, coding rules, system design — lives in the module folder it describes.
+**Keep the root lean.** Agent config (`.agents/`, `.agents-workshop/`, `.claude/`), the app and service folders, the vision. Everything module-specific — ADRs, `CONTEXT.md`, coding rules, system design — lives in the module folder it describes.
 
 **Split the two docs folders by a testable question.** Root `docs/` is *process*: how we work here. Module `docs/` is *product*: system design, ADRs, domain context.
 
