@@ -2,12 +2,12 @@
 
 Agents need a place to work.
 
-Long-term shared memory, scratch-pads, Remotion videos, research notes, throwaway prototypes, generated reports. None of it is your product, all of it is worth keeping, and none of it belongs in your source tree.
+Long-term shared memory, scratchpads, Remotion videos, research notes, throwaway prototypes, generated reports. None of it is your product, all of it is worth keeping, and none of it belongs in your source tree.
 
 ```
 your-repo/
 ├── .agents/            the factory — how the agents work
-├── .agents-workshop/   where the agents work — braindump, scratch-pads, videos
+├── .agents-workshop/   where the agents work — braindump, scratchpads, videos
 ├── src/
 └── package.json
 ```
@@ -24,7 +24,7 @@ Keeping them apart is what makes upgrades work: point an agent back at scaffold 
 | --- | --- | --- |
 | `docs/` | Agent-facing project docs — issue tracker, triage labels, domain layout | `setup-matt-pocock-skills` |
 | `braindump/` | Long-term memory, one dense fact per line, grouped by topic — decisions and their reasons, gotchas, approaches already rejected | `braindump` |
-| `scratch/` | Working files for a task in flight. Safe to delete at any time. | any agent |
+| `scratchpad/` | Working files for a task in flight. Safe to delete at any time. | any agent |
 | `videos/` | One Remotion project per video. Launch films, feature demos. | `remotion-*`, `setup-remotion` |
 | `research/` | Findings against primary sources, kept as markdown | `research` |
 | `prototypes/` | Throwaway builds answering one design question | `prototype`, `experiment` |
@@ -59,7 +59,7 @@ Commit the work, ignore the renders and the installs:
 .agents-workshop/**/out/
 .agents-workshop/videos/**/*.mp4
 .agents-workshop/reports/
-.agents-workshop/scratch/
+.agents-workshop/scratchpad/
 ```
 
 Adjust per folder. The default is **commit it** — an agent's research note is worth more in six months than it is today, and it costs kilobytes. `braindump/` in particular is worthless uncommitted: shared means shared with the next clone, not just the next session.
