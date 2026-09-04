@@ -8,21 +8,25 @@
 <meta property="og:title" content="scaffold">
 <meta property="og:description" content="Point an agent at this repo. Get a software factory.">
 <meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b0b0c'/><g stroke='%23e0a84b' stroke-width='9' stroke-linecap='round'><path d='M26 74V32M74 74V32M26 45h48M26 61h48'/></g></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230a141d'/><g stroke='%23e5ac57' stroke-width='9' stroke-linecap='round'><path d='M26 74V32M74 74V32M26 45h48M26 61h48'/></g></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0b0b0c;
-    --bg-2:#111113;
-    --line:#232326;
-    --line-soft:#1a1a1d;
-    --fg:#ededec;
-    --fg-2:#a4a4a0;
-    --fg-3:#6f6f6b;
-    --accent:#e0a84b;
-    --ok:#7fbf7f;
+    /* An architect's desk: blueprint stock under a warm lamp. The ground goes
+       Prussian, the linework goes cool white, and the accent stays warm —
+       amber on blue is the annotation pencil on the print, and it is what
+       keeps the page from reading as a generic dark theme. */
+    --bg:#0a141d;
+    --bg-2:#0f1d29;
+    --line:#22384a;
+    --line-soft:#162836;
+    --fg:#e9f0f5;
+    --fg-2:#9db2c2;
+    --fg-3:#6d8799;
+    --accent:#e5ac57;
+    --ok:#7fc0a0;
     --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
     --display:"Space Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
     --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
@@ -34,7 +38,7 @@
     margin:0;background:var(--bg);color:var(--fg);
     font-family:var(--sans);font-size:16px;line-height:1.6;
     -webkit-font-smoothing:antialiased;
-    background-image:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(224,168,75,.07),transparent 70%);
+    background-image:radial-gradient(ellipse 70% 45% at 50% -8%,rgba(229,172,87,.10),transparent 72%);
     background-repeat:no-repeat;
   }
 
@@ -45,9 +49,9 @@
   body::before{
     content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
     background-image:
-      linear-gradient(to right,  rgba(255,255,255,.058) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255,255,255,.058) 1px, transparent 1px),
-      radial-gradient(circle at 1px 1px, rgba(224,168,75,.42) 1.3px, transparent 1.8px);
+      linear-gradient(to right,  rgba(198,226,244,.075) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(198,226,244,.075) 1px, transparent 1px),
+      radial-gradient(circle at 1px 1px, rgba(229,172,87,.40) 1.3px, transparent 1.8px);
     background-size:72px 72px, 72px 72px, 72px 72px;
     background-position:center -1px, center -1px, center -1px;
     -webkit-mask-image:radial-gradient(ellipse 95% 78% at 50% 2%, #000 30%, transparent 85%);
@@ -72,12 +76,12 @@
     left:calc(50% - 36px + var(--cx) * 72px);
     top:calc(var(--cy) * 72px - 1px);
     width:215px;height:216px;         /* 215 + two 1px borders = exactly 3 cells apart */
-    border-left:1px solid rgba(224,168,75,var(--o));
-    border-right:1px solid rgba(224,168,75,var(--o));
+    border-left:1px solid rgba(229,172,87,var(--o));
+    border-right:1px solid rgba(229,172,87,var(--o));
   }
   .joints i::before,.joints i::after{
     content:"";position:absolute;left:-1px;right:-1px;height:1px;
-    background:rgba(224,168,75,var(--o));
+    background:rgba(229,172,87,var(--o));
   }
   .joints i::before{top:72px}
   .joints i::after{top:144px}
@@ -109,15 +113,15 @@
   .term{
     margin:46px 0 0;background:var(--bg-2);
     border:1px solid var(--line);border-radius:11px;
-    box-shadow:0 24px 70px -28px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.015) inset;
+    box-shadow:0 24px 70px -28px rgba(0,0,0,.75),0 0 0 1px rgba(198,226,244,.02) inset;
     overflow:hidden;text-align:left;
   }
   .term-bar{
     display:flex;align-items:center;gap:7px;
     padding:11px 15px;border-bottom:1px solid var(--line-soft);
-    background:rgba(255,255,255,.015);
+    background:rgba(198,226,244,.022);
   }
-  .dot{width:10px;height:10px;border-radius:50%;background:#2e2e32;flex:none}
+  .dot{width:10px;height:10px;border-radius:50%;background:#27404f;flex:none}
   .term-title{margin-left:8px;font-family:var(--mono);font-size:12px;color:var(--fg-3)}
   .term-body{
     /* line-height stays near 1 so the box-drawing connectors actually join up */
@@ -130,7 +134,7 @@
   @keyframes rise{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
   .pr{color:var(--accent)}
   .usr{color:var(--fg)}
-  .tree{color:#3a3a3e}
+  .tree{color:#2b4459}
   .layer{color:var(--accent);font-weight:700}
   .leaf{color:var(--fg)}
   .owner{color:var(--accent);font-weight:500}
@@ -197,7 +201,7 @@
     font-family:var(--mono);font-size:12px;letter-spacing:.06em;
     text-transform:uppercase;padding:0 20px;transition:color .15s,background .15s;
   }
-  .copy button:hover{color:var(--accent);background:rgba(224,168,75,.06)}
+  .copy button:hover{color:var(--accent);background:rgba(229,172,87,.07)}
   .copy button.done{color:var(--ok)}
   @media (max-width:520px){
     .copy{flex-direction:column}
@@ -205,7 +209,7 @@
   }
   .repo{
     color:var(--accent);text-decoration:none;font-weight:600;white-space:nowrap;
-    border-bottom:1px solid rgba(224,168,75,.28);transition:border-color .16s;
+    border-bottom:1px solid rgba(229,172,87,.3);transition:border-color .16s;
   }
   .repo:hover{border-bottom-color:var(--accent)}
   /* inline, not inline-flex — keeps the mark on the text baseline */
