@@ -22,7 +22,7 @@ Then run `/bootstrap-agentic-repo`. It detects the stack, installs the rest, and
 | [`mattpocock/skills`](https://github.com/mattpocock/skills) | `npx skills@latest add mattpocock/skills` |
 | [`millionco/react-doctor`](https://github.com/millionco/react-doctor) | `npx skills@latest add millionco/react-doctor` |
 | [`ericzakariasson/scandinavian-design`](https://github.com/ericzakariasson/scandinavian-design) | `npx skills@latest add ericzakariasson/scandinavian-design` |
-| [`cursor/plugins`](https://github.com/cursor/plugins) — `cursor-team-kit` | see [`thermo-nuclear-code-quality-review`](https://github.com/cursor/plugins/blob/main/cursor-team-kit/skills/thermo-nuclear-code-quality-review/SKILL.md) |
+| [`cursor/plugins`](https://github.com/cursor/plugins) — `cursor-team-kit` | [`thermo-nuclear-code-quality-review`](https://github.com/cursor/plugins/blob/main/cursor-team-kit/skills/thermo-nuclear-code-quality-review/SKILL.md). `find-critical-bugs` started as a Cursor automation template — the skill adaptation installs from `mohganji/skills`. |
 
 ## Roster
 
@@ -72,8 +72,8 @@ The lenses the automation fleet runs. Independent by design — never let one re
 
 | Skill | Source | Lens |
 | --- | --- | --- |
-| `find-critical-bugs` | mohganji | Correctness. Data loss, crashes, races, silent corruption — each proven by a failing test |
-| `thermo-nuclear-code-quality-review` | cursor/plugins | Structure and maintainability |
+| `find-critical-bugs` | cursor | Correctness. Data loss, crashes, races, silent corruption — each proven by a failing test |
+| `thermo-nuclear-code-quality-review` | cursor | Structure and maintainability |
 | `refactoring-guru` | mohganji | Smells → prescribed treatments, refactoring.guru methodology |
 | `matt-code-review` | mattpocock | Standards and spec conformance |
 | `improve-codebase-architecture` | mattpocock | Architecture-level findings |
