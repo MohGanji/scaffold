@@ -394,7 +394,9 @@
             after(360, function(){
               line('&nbsp;');
               line('  <span class="rdy">✔ factory ready.</span>', 'rv');
-              after(7000, run);
+              // Runs once. The tree is a list of what you get, not a loop to
+              // watch — re-typing it every seven seconds pulls the eye back
+              // to something already read.
             });
             return;
           }
